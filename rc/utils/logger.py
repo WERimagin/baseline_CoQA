@@ -28,10 +28,12 @@ class ModelLogger(object):
             self.dirname = pretrained
         else:
             self.dirname = dirname
+            """
             if os.path.exists(dirname):
                 raise Exception('Directory already exists: {}'.format(dirname))
             os.mkdir(dirname)
             os.mkdir('{}/{}'.format(dirname, "metrics"))
+            """
             self.log_json(self.config, os.path.join(self.dirname, Constants._CONFIG_FILE))
         sys.stdout = Logger(os.path.join(self.dirname, Constants._LOG_FILE))
 

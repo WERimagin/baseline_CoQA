@@ -8,6 +8,7 @@ import numpy as np
 import argparse
 import torch
 from onmt.Utils import get_logger
+from tqdm import tqdm
 
 
 def get_vocabs(dict_file):
@@ -34,7 +35,7 @@ def get_vocabs(dict_file):
 def get_embeddings(file_enc, opt, flag):
     embs = dict()
     if flag == 'enc':
-        for (i, l) in enumerate(open(file_enc, 'rb')):
+        for (i, l) in tqdm(enumerate(open(file_enc, 'rb'))):
             if i < opt.skip_lines:
                 continue
             if not l:
@@ -45,12 +46,13 @@ def get_embeddings(file_enc, opt, flag):
             l_split = l.decode('utf8').strip().split(' ')
             if len(l_split) == 2:
                 continue
-            embs[l_split[0]] = [float(em) for em in l_split[1:]]
+            embs[" ".join(l_split[:-300])] = [float(em) for em in l_split[-300:]]
+            #embs[l_split[0]] = [float(em) for em in l_split[1:]]
         logger.info("Got {} encryption embeddings from {}".format(len(embs),
                                                                   file_enc))
     else:
 
-        for (i, l) in enumerate(open(file_enc, 'rb')):
+        for (i, l) in tqdm(enumerate(open(file_enc, 'rb'))):
             if not l:
                 break
             if len(l) == 0:
@@ -59,7 +61,8 @@ def get_embeddings(file_enc, opt, flag):
             l_split = l.decode('utf8').strip().split(' ')
             if len(l_split) == 2:
                 continue
-            embs[l_split[0]] = [float(em) for em in l_split[1:]]
+            embs[" ".join(l_split[:-300])] = [float(em) for em in l_split[-300:]]
+            #embs[l_split[0]] = [float(em) for em in l_split[1:]]
         logger.info("Got {} decryption embeddings from {}".format(len(embs),
                                                                   file_enc))
     return embs
@@ -99,12 +102,28 @@ def main():
     parser.add_argument('-skip_lines', type=int, default=0,
                         help="Skip first lines of the embedding file")
     parser.add_argument('-type', choices=TYPES, default="GloVe")
+    parser.add_argument('-enc_dec', default="enc")
     opt = parser.parse_args()
 
     enc_vocab, dec_vocab = get_vocabs(opt.dict_file)
     if opt.type == "word2vec":
         opt.skip_lines = 1
 
+    if opt.enc_dec=="enc":
+        embeddings_enc = get_embeddings(opt.emb_file_enc, opt, flag='enc')
+        filtered_enc_embeddings, enc_count = match_embeddings(enc_vocab,
+                                                              embeddings_enc,
+                                                              opt)
+        enc_output_file = opt.output_file + ".enc.pt"
+        torch.save(filtered_enc_embeddings, enc_output_file)
+    elif opt.enc_dec=="dec":
+        embeddings_dec = get_embeddings(opt.emb_file_dec, opt, flag='dec')
+        filtered_dec_embeddings, dec_count = match_embeddings(dec_vocab,
+                                                              embeddings_dec,
+                                                              opt)
+        dec_output_file = opt.output_file + ".dec.pt"
+        torch.save(filtered_dec_embeddings, dec_output_file)
+    """
     embeddings_enc = get_embeddings(opt.emb_file_enc, opt, flag='enc')
     embeddings_dec = get_embeddings(opt.emb_file_dec, opt, flag='dec')
 
@@ -137,7 +156,7 @@ def main():
     torch.save(filtered_enc_embeddings, enc_output_file)
     torch.save(filtered_dec_embeddings, dec_output_file)
     logger.info("\nDone.")
-
+    """
 
 if __name__ == "__main__":
     logger = get_logger('embeddings_to_torch.log')
