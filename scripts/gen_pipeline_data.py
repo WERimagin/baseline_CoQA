@@ -9,6 +9,7 @@ import re
 import time
 import string
 from pycorenlp import StanfordCoreNLP
+from nltk.tokenize import word_tokenize,sent_tokenize
 
 nlp = StanfordCoreNLP('http://localhost:9000')
 UNK = 'unknown'
@@ -31,6 +32,7 @@ def _str(s):
     return s
 
 
+"""
 def process(text):
     paragraph = nlp.annotate(text, properties={
                              'annotators': 'tokenize, ssplit',
@@ -50,6 +52,22 @@ def process(text):
             # output['pos'].append(token['pos'])
             # output['ner'].append(token['ner'])
             output['offsets'].append((token['characterOffsetBegin'], token['characterOffsetEnd']))
+    return output
+"""
+
+def process(text):
+    output = {'word': [],
+              # 'lemma': [],
+              # 'pos': [],
+              # 'ner': [],
+              'offsets': []}
+    text_split=word_tokenize(text)
+    index=0
+    for t in text_split:
+        start=text.find(t[index])
+        end=start+len(t)
+        output['word'].append(_str(t))
+        output['offsets'].append((start, end))
     return output
 
 
