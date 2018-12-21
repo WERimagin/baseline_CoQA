@@ -140,6 +140,7 @@ class Model(object):
         self.network.train(update)
         # Run forward
         res = self.network(ex)
+        print(ex)
         score_s, score_e = res['score_s'], res['score_e']
 
         output = {

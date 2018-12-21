@@ -160,16 +160,9 @@ class ModelHandler(object):
         start_time = time.time()
         output = []
         for step, input_batch in enumerate(data_loader):
-            print(input_batch)
-            print()
             input_batch = sanitize_input(input_batch, self.config, self.model.word_dict,
                                          self.model.feature_dict, training=training)
             x_batch = vectorize_input(input_batch, self.config, training=training, device=self.device)
-            print(input_batch)
-            print()
-            print(x_batch)
-            print("epoch")
-            print()
             if not x_batch:
                 continue  # When there are no target spans present in the batch
 
