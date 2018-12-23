@@ -101,7 +101,6 @@ class DrQA(nn.Module):
         xd_mask = document padding mask        (batch, max_d_len)
         targets = span targets                 (batch,)
         """
-
         # Embed both document and question
         xq_emb = self.w_embedding(ex['xq'])                         # (batch, max_q_len, word_embed)
         xd_emb = self.w_embedding(ex['xd'])                         # (batch, max_d_len, word_embed)
@@ -111,6 +110,7 @@ class DrQA(nn.Module):
         xd_emb = dropout(xd_emb, self.config['dropout_emb'], shared_axes=shared_axes, training=self.training)
         xd_mask = ex['xd_mask']
         xq_mask = ex['xq_mask']
+
 
         # Add attention-weighted question representation
         if self.config['use_qemb']:
