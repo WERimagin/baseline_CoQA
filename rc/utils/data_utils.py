@@ -147,8 +147,6 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
         evidence = ex['evidence']['word']
         offsets = ex['evidence']['offsets']
 
-        print(question)
-
         processed_q, processed_e = [], []
         for w in question:
             processed_q.append(vocab[w] if w in vocab else vocab[Constants._UNK_TOKEN])
@@ -176,7 +174,7 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
         print(sanitized_batch["targets"][-1])
         print(sanitized_batch["answers"][-1])
         print()
-        
+
     return sanitized_batch
 
 
