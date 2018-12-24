@@ -59,6 +59,7 @@ class CoQADataset(Dataset):
                 temp.extend(qas['annotated_question']['word'])
                 history.append((qas['annotated_question']['word'], qas['annotated_answer']['word']))
                 qas['annotated_question']['word'] = temp
+
                 self.examples.append(qas)
                 question_lens.append(len(qas['annotated_question']['word']))
                 paragraph_lens.append(len(paragraph['annotated_context']['word']))
@@ -143,6 +144,7 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
     """
     sanitized_batch = defaultdict(list)
     for ex in sample_batch:
+
         question = ex['question']['word']
         evidence = ex['evidence']['word']
         offsets = ex['evidence']['offsets']
@@ -170,12 +172,9 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
         if 'id' in ex:
             sanitized_batch['id'].append(ex['id'])
 
-        print(sanitized_batch["question"[-1]])
-        print()
-        print(sanitized_batch["targets"][-1])
-        print()
-        print(sanitized_batch["answers"][-1])
-        print()
+        print(question)
+        print(evidence)
+        print(ex["targets"])
         print()
 
     return sanitized_batch
