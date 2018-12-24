@@ -172,11 +172,11 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
         if 'id' in ex:
             sanitized_batch['id'].append(ex['id'])
 
-        print(sanitized_batch["question"])
-        print(sanitized_batch["evidence"])
-        print(sanitized_batch["targets"])
+        print(sanitized_batch["question"][-1])
+        print(sanitized_batch["evidence"][-1])
+        print(sanitized_batch["targets"][-1])
         print()
-        
+
     return sanitized_batch
 
 
