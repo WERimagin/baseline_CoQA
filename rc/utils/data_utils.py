@@ -176,7 +176,7 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
 
         print(processed_q)
         print()
-        print(sanitized["question"])
+        print(sanitized_batch["question"])
         print()
 
     return sanitized_batch
