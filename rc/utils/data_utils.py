@@ -149,8 +149,6 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
         evidence = ex['evidence']['word']
         offsets = ex['evidence']['offsets']
 
-        print(list(vocab.items())[0:20])
-        print()
         processed_q, processed_e = [], []
         for w in question:
             processed_q.append(vocab[w] if w in vocab else vocab[Constants._UNK_TOKEN])
@@ -174,11 +172,11 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
         if 'id' in ex:
             sanitized_batch['id'].append(ex['id'])
 
-        print(processed_q)
-        print()
         print(sanitized_batch["question"])
+        print(sanitized_batch["evidence"])
+        print(sanitized_batch["targets"])
         print()
-
+        
     return sanitized_batch
 
 
