@@ -173,7 +173,12 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
         sanitized_batch['answers'].append(ex['answers'])
         if 'id' in ex:
             sanitized_batch['id'].append(ex['id'])
-            
+
+        print(processed_q)
+        print()
+        print(sanitized["question"])
+        print()
+
     return sanitized_batch
 
 
