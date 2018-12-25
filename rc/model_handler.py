@@ -11,6 +11,8 @@ from utils.logger import ModelLogger
 from utils.eval_utils import AverageMeter
 from utils.data_utils import sanitize_input, vectorize_input
 
+from tqdm import tqdm
+
 
 class ModelHandler(object):
     """High level model_handler that trains/validates/tests the network,
@@ -159,7 +161,7 @@ class ModelHandler(object):
     def _run_epoch(self, data_loader, training=True, verbose=10, out_predictions=False):
         start_time = time.time()
         output = []
-        for step, input_batch in enumerate(data_loader):
+        for step, input_batch in tqdm(enumerate(data_loader)):
             input_batch = sanitize_input(input_batch, self.config, self.model.word_dict,
                                          self.model.feature_dict, training=training)
             x_batch = vectorize_input(input_batch, self.config, training=training, device=self.device)
