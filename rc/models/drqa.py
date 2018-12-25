@@ -111,9 +111,9 @@ class DrQA(nn.Module):
         xd_mask = ex['xd_mask']
         xq_mask = ex['xq_mask']
 
-        print(xq_emb)
-        print(xd_emb)
-        print(ex['targets'])
+        print(ex["xq"],ex["xq"].size())
+        print(ex["xd"],ex["xd"].size())
+        print(ex['targets'],ex["targets"].size())
         print()
 
         # Add attention-weighted question representation
