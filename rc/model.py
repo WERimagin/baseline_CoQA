@@ -152,7 +152,7 @@ class Model(object):
             # Compute loss and accuracies
             loss = self.compute_span_loss(score_s, score_e, res['targets'])
             output['loss'] = loss.item()
-            print(output['loss'] = loss.item())
+            print(output['loss'])
 
             # Clear gradients and run backward
             self.optimizer.zero_grad()
