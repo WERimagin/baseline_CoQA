@@ -111,6 +111,10 @@ class DrQA(nn.Module):
         xd_mask = ex['xd_mask']
         xq_mask = ex['xq_mask']
 
+        print(xq_emb)
+        print(xd_emb)
+        print(ex['targets'])
+        print()
 
         # Add attention-weighted question representation
         if self.config['use_qemb']:
