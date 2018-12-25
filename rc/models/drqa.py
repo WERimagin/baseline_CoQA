@@ -113,7 +113,7 @@ class DrQA(nn.Module):
 
         print(ex["xq"],ex["xq"].size())
         print(ex["xd"],ex["xd"].size())
-        print(ex['targets'],ex["targets"].size()])
+        print(ex['targets'],ex["targets"].size())
         print()
 
         # Add attention-weighted question representation
