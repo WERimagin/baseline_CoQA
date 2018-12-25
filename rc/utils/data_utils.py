@@ -42,6 +42,7 @@ class CoQADataset(Dataset):
         self.examples = []
         self.vocab = Counter()
         dataset = read_json(filename)
+        count=0
         for paragraph in dataset['data']:
             history = []
             for qas in paragraph['qas']:
@@ -70,6 +71,10 @@ class CoQADataset(Dataset):
                 for w in qas['annotated_answer']['word']:
                     self.vocab[w] += 1
             self.paragraphs.append(paragraph)
+            count+=1
+            if count==2:
+                break
+                
         print('Load {} paragraphs, {} examples.'.format(len(self.paragraphs), len(self.examples)))
         print('Paragraph length: avg = %.1f, max = %d' % (np.average(paragraph_lens), np.max(paragraph_lens)))
         print('Question length: avg = %.1f, max = %d' % (np.average(question_lens), np.max(question_lens)))
