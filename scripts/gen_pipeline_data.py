@@ -11,7 +11,7 @@ import string
 from pycorenlp import StanfordCoreNLP
 from nltk.tokenize import word_tokenize,sent_tokenize
 
-nlp = StanfordCoreNLP('http://localhost:9000')
+#nlp = StanfordCoreNLP('http://localhost:9000')
 UNK = 'unknown'
 
 
