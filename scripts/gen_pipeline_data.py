@@ -8,10 +8,12 @@ import json
 import re
 import time
 import string
-#from pycorenlp import StanfordCoreNLP
-from nltk.tokenize import word_tokenize,sent_tokenize
 
-#nlp = StanfordCoreNLP('http://localhost:9000')
+from nltk.tokenize import word_tokenize,sent_tokenize
+"""
+from pycorenlp import StanfordCoreNLP
+nlp = StanfordCoreNLP('http://localhost:9000')
+"""
 UNK = 'unknown'
 
 
@@ -52,6 +54,7 @@ def process(text):
             # output['pos'].append(token['pos'])
             # output['ner'].append(token['ner'])
             output['offsets'].append((token['characterOffsetBegin'], token['characterOffsetEnd']))
+            print(output["offsets"][-1])
     return output
 """
 
@@ -69,6 +72,7 @@ def process(text):
         output['word'].append(_str(t))
         output['offsets'].append((start, end))
         position=end
+        
     return output
 
 
