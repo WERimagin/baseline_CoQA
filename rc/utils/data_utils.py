@@ -74,7 +74,7 @@ class CoQADataset(Dataset):
             count+=1
             if count==2:
                 break
-                
+
         print('Load {} paragraphs, {} examples.'.format(len(self.paragraphs), len(self.examples)))
         print('Paragraph length: avg = %.1f, max = %d' % (np.average(paragraph_lens), np.max(paragraph_lens)))
         print('Question length: avg = %.1f, max = %d' % (np.average(question_lens), np.max(question_lens)))
@@ -147,8 +147,14 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
         feature_dict: the features we want to concatenate to our embeddings.
         train: train or test?
     """
+
     sanitized_batch = defaultdict(list)
     for ex in sample_batch:
+
+        print(ex["question"]["word"])
+        print(ex["targets"])
+        print(ex["answers"])
+        print()
 
         question = ex['question']['word']
         evidence = ex['evidence']['word']
