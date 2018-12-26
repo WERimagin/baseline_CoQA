@@ -8,7 +8,7 @@ import json
 import re
 import time
 import string
-from pycorenlp import StanfordCoreNLP
+#from pycorenlp import StanfordCoreNLP
 from nltk.tokenize import word_tokenize,sent_tokenize
 
 #nlp = StanfordCoreNLP('http://localhost:9000')
