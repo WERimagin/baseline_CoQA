@@ -151,11 +151,6 @@ def sanitize_input(sample_batch, config, vocab, feature_dict, training=True):
     sanitized_batch = defaultdict(list)
     for ex in sample_batch:
 
-        print(ex["question"]["word"])
-        print(ex["targets"])
-        print(ex["answers"])
-        print()
-
         question = ex['question']['word']
         evidence = ex['evidence']['word']
         offsets = ex['evidence']['offsets']
