@@ -64,16 +64,11 @@ def process(text):
     text_split=word_tokenize(text)
     position=0
     for t in text_split:
-        start=text[position:].find(t)
+        start=position+text[position:].find(t)
         end=start+len(t)
         output['word'].append(_str(t))
         output['offsets'].append((start, end))
         position=end
-        print(t)
-        print(start,end)
-
-    print(len(text))
-    print()
     return output
 
 
