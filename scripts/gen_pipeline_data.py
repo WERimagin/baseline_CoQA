@@ -68,6 +68,7 @@ def process(text):
         end=start+len(t)
         output['word'].append(_str(t))
         output['offsets'].append((start, end))
+        print(start,end)
     return output
 
 
