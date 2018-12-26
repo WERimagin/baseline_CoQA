@@ -72,6 +72,7 @@ def process(text):
         print(start,end)
 
     print(len(text))
+    print()
     return output
 
 
