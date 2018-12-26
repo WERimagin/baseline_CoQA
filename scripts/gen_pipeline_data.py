@@ -62,15 +62,16 @@ def process(text):
               # 'ner': [],
               'offsets': []}
     text_split=word_tokenize(text)
-    index=0
+    position=0
     for t in text_split:
-        start=text.find(t[index])
+        start=text[position:].find(t)
         end=start+len(t)
         output['word'].append(_str(t))
         output['offsets'].append((start, end))
+        position=end
         print(start,end)
+
     print(len(text))
-    print()
     return output
 
 
