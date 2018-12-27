@@ -34,7 +34,7 @@ def _str(s):
     return s
 
 
-
+"""
 def process(text):
     paragraph = nlp.annotate(text, properties={
                              'annotators': 'tokenize, ssplit',
@@ -74,7 +74,7 @@ def process(text):
 
     return output
 
-"""
+
 def get_str(output, lower=False):
     s = ' '.join(output['word'])
     return s.lower() if lower else s
