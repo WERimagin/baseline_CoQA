@@ -30,26 +30,12 @@ python seq2seq/tools/embeddings_to_torch.py \
   --n_history 0 --dir pipeline_models \
   --embed_size 300 \
   --embed_file ~/data/glove.840B.300d.txt \
-  --predict_raw_text n \
-  --cuda False
+  --predict_raw_text n
 
-  python rc/main.py \
-   --trainset data/coqa.train.pipeline.json \
-   --devset data/coqa.dev.pipeline.json \
-   --n_history 1 --dir pipeline_models \
-   --embed_size 300 \
-   --embed_file ~/data/glove.6B.300d.txt \
-   --predict_raw_text n \
-   --cuda False
 
-  python rc/main.py \
-   --trainset data/coqa.train.pipeline.json \
-   --devset data/coqa.dev.pipeline.json \
-   --n_history 0 --dir pipeline_models \
-   --embed_size 300 \
-   --embed_file ~/data/glove.6B.300d.txt \
-   --predict_raw_text n \
-   --cuda False
+
+
+
 
 
 training
@@ -71,17 +57,29 @@ python seq2seq/train.py \
 trans
 python rc/main.py \
 --testset data/coqa.dev.pipeline.json \
---n_history 2 --pretrained pipeline_models
+--n_history 0 \
+--pretrained pipeline_models
+
 python scripts/gen_pipeline_for_seq2seq.py \
 --data_file data/coqa.dev.pipeline.json \
 --output_file pipeline_models/pipeline-seq2seq-src.txt \
 --pred_file pipeline_models/predictions.json
+
 python seq2seq/translate.py \
--model pipeline_models/seq2seq_copy_acc_85.00_ppl_2.18_e16.pt \
+-model pipeline_models/old/seq2seq_copy_acc_37.34_ppl_102.13_e50.pt \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
 -replace_unk -verbose -gpu 0
+
 python scripts/gen_seq2seq_output.py \
 --data_file data/coqa-dev-v1.0.json \
 --pred_file pipeline_models/pred.txt \
 --output_file pipeline_models/pipeline.prediction.json
+
+python evaluate-v1.0.py \
+--data-file data/coqa-dev-v1.0.json \
+--pred-file pipeline_models/pipeline.prediction.json
+
+python evaluate-v1.0.py \
+--data-file data/coqa-dev-v1.0.json \
+--pred-file pipeline_models/predictions.json
