@@ -180,8 +180,9 @@ if __name__ == '__main__':
             #ない場合にはspanをspanとして扱う。
             #find_span:文字と単語の変換
             #pipelineの場合はそもそもanswerではなく、spanを扱うべき？
-            """
+
             if input_text in chosen_text:
+                continue
                 i = chosen_text.find(input_text)
                 _qas['answer_span'] = find_span(_datum['annotated_context']['offsets'],
                                                 start + i, start + i + len(input_text))
@@ -190,9 +191,11 @@ if __name__ == '__main__':
             """
             _qas['answer_span'] = find_span(_datum['annotated_context']['offsets'], start, end)
             _datum['qas'].append(_qas)
-
+            """
             s, e = _qas['answer_span']
             span_str = ' '.join(_datum['annotated_context']['word'][s: e + 1]).lower()
+            print('{} || {}\n'.format(get_str(_qas['annotated_question'], lower=True), span_str))
+            print('{}\n'.format(get_str(_qas['annotated_answer'], lower=True)))
             f_src.write('{} || {}\n'.format(get_str(_qas['annotated_question'], lower=True), span_str))
             f_tgt.write('{}\n'.format(get_str(_qas['annotated_answer'], lower=True)))
         data.append(_datum)

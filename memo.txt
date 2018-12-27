@@ -1,13 +1,44 @@
 prepro
 
+rc
+python scripts/gen_drqa_data.py \
+--data_file data/coqa-train-v1.0.json \
+--output_file coqa.train.json
+python scripts/gen_drqa_data.py \
+--data_file data/coqa-dev-v1.0.json \
+--output_file coqa.dev.json
+
+ python rc/main.py \
+ --trainset data/coqa.train.json \
+ --devset data/coqa.dev.json \
+ --n_history 2 \
+ --dir rc_models \
+ --embed_file wordvecs/glove.840B.300d.txt
+
+seq2seq
+
+python scripts/gen_seq2seq_data.py \
+--data_file data/coqa-train-v1.0.json \
+--n_history 2 --lower \
+--output_file data/seq2seq-train-h2
+
+python scripts/gen_seq2seq_data.py \
+--data_file data/coqa-dev-v1.0.json \
+--n_history 2 --lower \
+--output_file data/seq2seq-dev-h2
+
+pipeline
+
 python3 scripts/gen_pipeline_data.py \
---data_file data/coqa-train-v1.0-split1.json \
+--data_file data/coqa-train-v1.0.json \
 --output_file1 data/coqa.train.pipeline.json \
 --output_file2 data/seq2seq-train-pipeline
+
 python3 scripts/gen_pipeline_data.py \
  --data_file data/coqa-dev-v1.0.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
+
 python3 seq2seq/preprocess.py \
  -train_src data/seq2seq-train-pipeline-src.txt \
  -train_tgt data/seq2seq-train-pipeline-tgt.txt \
@@ -15,6 +46,7 @@ python3 seq2seq/preprocess.py \
  -valid_tgt data/seq2seq-dev-pipeline-tgt.txt \
  -save_data data/seq2seq-pipeline \
  -lower -dynamic_dict -src_seq_length 10000
+
 PYTHONPATH=seq2seq \
 python seq2seq/tools/embeddings_to_torch.py \
  -emb_file_enc ~/data/glove.840B.300d.txt \
@@ -34,8 +66,10 @@ python seq2seq/tools/embeddings_to_torch.py \
 
 
 
-
-
+  python3 scripts/gen_pipeline_data.py \
+   --data_file data/coqa-dev-v1.0.json \
+   --output_file1 data/coqa.dev.pipeline2.json \
+   --output_file2 data/seq2seq-dev-pipeline2
 
 
 training
@@ -55,22 +89,26 @@ python seq2seq/train.py \
   -epochs 50 -gpuid 0 -seed 123
 
 trans
+(rc)
 python rc/main.py \
 --testset data/coqa.dev.pipeline.json \
 --n_history 0 \
 --pretrained pipeline_models
 
+(prepare for seq2seq from rc)
 python scripts/gen_pipeline_for_seq2seq.py \
 --data_file data/coqa.dev.pipeline.json \
 --output_file pipeline_models/pipeline-seq2seq-src.txt \
 --pred_file pipeline_models/predictions.json
 
+(seq2seq)
 python seq2seq/translate.py \
 -model pipeline_models/old/seq2seq_copy_acc_37.34_ppl_102.13_e50.pt \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
 -replace_unk -verbose -gpu 0
 
+(evalのための整形)
 python scripts/gen_seq2seq_output.py \
 --data_file data/coqa-dev-v1.0.json \
 --pred_file pipeline_models/pred.txt \
@@ -83,3 +121,70 @@ python evaluate-v1.0.py \
 python evaluate-v1.0.py \
 --data-file data/coqa-dev-v1.0.json \
 --pred-file pipeline_models/predictions.json
+
+issue
+I can't get paper's score of DrQA + PGnet.
+I used the pipeline model and n_history is 0.
+I think the dev is 61.5, but the result is not.
+I used CoQA evaluation script for evaluation.
+python evaluate-v1.0.py
+--data-file data/coqa-dev-v1.0.json
+--pred-file pipeline_models/pipeline.prediction.json
+
+The result is here.
+{
+"children_stories": {
+"em": 11.5,
+"f1": 13.7,
+"turns": 1425
+},
+"literature": {
+"em": 12.7,
+"f1": 13.9,
+"turns": 1630
+},
+"mid-high_school": {
+"em": 12.4,
+"f1": 14.3,
+"turns": 1653
+},
+"news": {
+"em": 10.0,
+"f1": 11.1,
+"turns": 1649
+},
+"wikipedia": {
+"em": 9.6,
+"f1": 11.0,
+"turns": 1626
+},
+"reddit": {
+"em": 0.0,
+"f1": 0.0,
+"turns": 0
+},
+"science": {
+"em": 0.0,
+"f1": 0.0,
+"turns": 0
+},
+"in_domain": {
+"em": 11.2,
+"f1": 12.7,
+"turns": 7983
+},
+"out_domain": {
+"em": 0.0,
+"f1": 0.0,
+"turns": 0
+},
+"overall": {
+"em": 11.2,
+"f1": 12.7,
+"turns": 7983
+}
+}
+
+When I used only DrQA, the score is as expected.
+I think DrQA predicts the answer,but DrQA must predict Evidence in the pipeline model.
+Thank you!
