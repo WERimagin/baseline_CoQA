@@ -10,10 +10,10 @@ import time
 import string
 
 from nltk.tokenize import word_tokenize,sent_tokenize
-"""
+
 from pycorenlp import StanfordCoreNLP
 nlp = StanfordCoreNLP('http://localhost:9000')
-"""
+
 UNK = 'unknown'
 
 
@@ -34,7 +34,7 @@ def _str(s):
     return s
 
 
-"""
+
 def process(text):
     paragraph = nlp.annotate(text, properties={
                              'annotators': 'tokenize, ssplit',
@@ -54,7 +54,6 @@ def process(text):
             # output['pos'].append(token['pos'])
             # output['ner'].append(token['ner'])
             output['offsets'].append((token['characterOffsetBegin'], token['characterOffsetEnd']))
-            print(output["offsets"][-1])
     return output
 """
 
@@ -75,7 +74,7 @@ def process(text):
 
     return output
 
-
+"""
 def get_str(output, lower=False):
     s = ' '.join(output['word'])
     return s.lower() if lower else s
@@ -182,12 +181,12 @@ if __name__ == '__main__':
             #pipelineの場合はそもそもanswerではなく、spanを扱うべき？
 
             if input_text in chosen_text:
-                continue
                 i = chosen_text.find(input_text)
                 _qas['answer_span'] = find_span(_datum['annotated_context']['offsets'],
                                                 start + i, start + i + len(input_text))
             else:
                 _qas['answer_span'] = find_span(_datum['annotated_context']['offsets'], start, end)
+
             """
             _qas['answer_span'] = find_span(_datum['annotated_context']['offsets'], start, end)
             _datum['qas'].append(_qas)
