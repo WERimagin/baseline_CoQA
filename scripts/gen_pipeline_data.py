@@ -194,8 +194,6 @@ if __name__ == '__main__':
             """
             s, e = _qas['answer_span']
             span_str = ' '.join(_datum['annotated_context']['word'][s: e + 1]).lower()
-            print('{} || {}\n'.format(get_str(_qas['annotated_question'], lower=True), span_str))
-            print('{}\n'.format(get_str(_qas['annotated_answer'], lower=True)))
             f_src.write('{} || {}\n'.format(get_str(_qas['annotated_question'], lower=True), span_str))
             f_tgt.write('{}\n'.format(get_str(_qas['annotated_answer'], lower=True)))
         data.append(_datum)
