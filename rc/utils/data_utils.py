@@ -45,7 +45,6 @@ class CoQADataset(Dataset):
         for paragraph in dataset['data']:
             history = []
             for qas in paragraph['qas']:
-                print(len(self.examples))
                 qas['paragraph_id'] = len(self.paragraphs)
                 temp = []
                 n_history = len(history) if config['n_history'] < 0 else min(config['n_history'], len(history))
@@ -60,7 +59,6 @@ class CoQADataset(Dataset):
                 temp.extend(qas['annotated_question']['word'])
                 history.append((qas['annotated_question']['word'], qas['annotated_answer']['word']))
                 qas['annotated_question']['word'] = temp
-                print(len(self.examples))
                 self.examples.append(qas)
                 question_lens.append(len(qas['annotated_question']['word']))
                 paragraph_lens.append(len(paragraph['annotated_context']['word']))
@@ -71,7 +69,6 @@ class CoQADataset(Dataset):
                 for w in qas['annotated_answer']['word']:
                     self.vocab[w] += 1
             self.paragraphs.append(paragraph)
-            print(len(self.paragraphs))
 
         print('Load {} paragraphs, {} examples.'.format(len(self.paragraphs), len(self.examples)))
         print('Paragraph length: avg = %.1f, max = %d' % (np.average(paragraph_lens), np.max(paragraph_lens)))
