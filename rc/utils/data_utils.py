@@ -69,7 +69,9 @@ class CoQADataset(Dataset):
                     self.vocab[w] += 1
                 for w in qas['annotated_answer']['word']:
                     self.vocab[w] += 1
+                print(len(self.examples))
             self.paragraphs.append(paragraph)
+            print(len(self.paragraphs))
 
         print('Load {} paragraphs, {} examples.'.format(len(self.paragraphs), len(self.examples)))
         print('Paragraph length: avg = %.1f, max = %d' % (np.average(paragraph_lens), np.max(paragraph_lens)))
