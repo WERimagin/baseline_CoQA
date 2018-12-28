@@ -187,11 +187,8 @@ if __name__ == '__main__':
                                                 start + i, start + i + len(input_text))
             else:
                 _qas['answer_span'] = find_span(_datum['annotated_context']['offsets'], start, end)
-
-            """
-            _qas['answer_span'] = find_span(_datum['annotated_context']['offsets'], start, end)
             _datum['qas'].append(_qas)
-            """
+
             s, e = _qas['answer_span']
             span_str = ' '.join(_datum['annotated_context']['word'][s: e + 1]).lower()
             f_src.write('{} || {}\n'.format(get_str(_qas['annotated_question'], lower=True), span_str))
