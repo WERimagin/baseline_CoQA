@@ -56,20 +56,7 @@ python seq2seq/tools/embeddings_to_torch.py \
  -enc_dec dec
 
 
- python rc/main.py \
-  --trainset data/coqa.train.pipeline.json \
-  --devset data/coqa.dev.pipeline.json \
-  --n_history 0 --dir pipeline_models \
-  --embed_size 300 \
-  --embed_file ~/data/glove.840B.300d.txt \
-  --predict_raw_text n
 
-
-
-  python3 scripts/gen_pipeline_data.py \
-   --data_file data/coqa-dev-v1.0.json \
-   --output_file1 data/coqa.dev.pipeline2.json \
-   --output_file2 data/seq2seq-dev-pipeline2
 
 
 training
@@ -107,6 +94,13 @@ python seq2seq/translate.py \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
 -replace_unk -verbose -gpu 0
+
+python seq2seq/translate.py \
+-model pipeline_models/old/seq2seq_copy_acc_37.34_ppl_102.13_e50.pt \
+-src pipeline_models/pipeline-seq2seq-src.txt \
+-output pipeline_models/pred.txt \
+-replace_unk -verbose -gpu 0
+
 
 (evalのための整形)
 python scripts/gen_seq2seq_output.py \
