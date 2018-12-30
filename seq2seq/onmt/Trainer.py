@@ -271,10 +271,16 @@ class Trainer(object):
             'epoch': epoch,
             'optim': self.optim,
         }
+
+        torch.save(checkpoint,
+                   '%s.pt'
+                   % (opt.save_model))
+        """
         torch.save(checkpoint,
                    '%s_acc_%.2f_ppl_%.2f_e%d.pt'
                    % (opt.save_model, valid_stats.accuracy(),
                       valid_stats.ppl(), epoch))
+        """
 
     def _gradient_accumulation(self, true_batchs, total_stats,
                                report_stats, normalization):
