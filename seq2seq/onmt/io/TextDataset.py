@@ -70,19 +70,18 @@ class TextDataset(ONMTDatasetBase):
                       for k in keys]
         print("66")
         example_values = ([ex[k] for k in keys] for ex in examples_iter)
-
+        print("77")
         # If out_examples is a generator, we need to save the filter_pred
         # function in serialization too, which would cause a problem when
         # `torch.save()`. Thus we materialize it as a list.
         src_size = 0
-
         out_examples = []
         for ex_values in example_values:
             example = self._construct_example_fromlist(
                 ex_values, out_fields)
             src_size += len(example.src)
             out_examples.append(example)
-
+        print("9")
         def filter_pred(example):
             return 0 < len(example.src) <= src_seq_length \
                 and 0 < len(example.tgt) <= tgt_seq_length
