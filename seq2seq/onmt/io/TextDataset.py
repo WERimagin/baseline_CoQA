@@ -346,7 +346,6 @@ class ShardedTextCorpusIterator(object):
         else:
             # Yield tuples util this shard's size reaches the threshold.
             self.corpus.seek(self.last_pos)
-            count=0
             while True:
                 if self.shard_size != 0 and self.line_index % 64 == 0:
                     # This part of check is time consuming on Py2 (but
@@ -359,8 +358,6 @@ class ShardedTextCorpusIterator(object):
                         self.last_pos = cur_pos
                         raise StopIteration
 
-                print(count)
-                count+=1
                 line = self.corpus.readline()
                 if line == '':
                     self.eof = True
