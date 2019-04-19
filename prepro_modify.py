@@ -77,7 +77,7 @@ def c2wpointer(context_text,context,answer_start,answer_end):#answer_start,endã‚
             break
     return answer_start_w,answer_end_w
 
-def data_process(input_path,dict_path):
+def data_process(input_path,dict_path,modify_path):
     with open(input_path,"r") as f:
         data=json.load(f)
     with open(dict_path,"r") as f:
