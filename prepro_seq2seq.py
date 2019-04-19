@@ -184,14 +184,14 @@ def data_process(input_path,dict_path,train=True):
     if train:
         print("data size:{}".format(count))
         with open("data/coqa-train-modify.json","w")as f:
-            json.dump(new_data,f)
+            json.dump(new_data,f,intent=4)
 
     else:
         print("data size:{}".format(count))
         print("interro sentence:{}".format(len(sentences)))
-        
+
         with open("data/coqa-dev-modify.json","w")as f:
-            json.dump(new_data,f)
+            json.dump(new_data,f,intent=4)
         with open("data/coqa-src-dev.txt","w")as f:
             for line in sentences:
                 f.write(line+"\n")
