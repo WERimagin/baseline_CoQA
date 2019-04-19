@@ -52,21 +52,23 @@ class TextDataset(ONMTDatasetBase):
         # Each element of an example is a dictionary whose keys represents
         # at minimum the src tokens and their indices and potentially also
         # the src and tgt features and alignment information.
+        print("tt")
         if tgt_examples_iter is not None:
             examples_iter = (self._join_dicts(src, tgt) for src, tgt in
                              zip(src_examples_iter, tgt_examples_iter))
         else:
             examples_iter = src_examples_iter
-
+        print("44")
         if dynamic_dict:
             examples_iter = self._dynamic_dict(examples_iter)
 
         # Peek at the first to see which fields are used.
         ex, examples_iter = self._peek(examples_iter)
         keys = ex.keys()
-
+        print("55")
         out_fields = [(k, fields[k]) if k in fields else (k, None)
                       for k in keys]
+        print("66")
         example_values = ([ex[k] for k in keys] for ex in examples_iter)
 
         # If out_examples is a generator, we need to save the filter_pred

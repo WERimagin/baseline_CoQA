@@ -81,7 +81,6 @@ class ONMTDatasetBase(torchtext.data.Dataset):
         Returns:
             a single dictionary that has the union of these keys.
         """
-        print("kk")
         return dict(chain(*[d.items() for d in args]))
 
     def _peek(self, seq):
