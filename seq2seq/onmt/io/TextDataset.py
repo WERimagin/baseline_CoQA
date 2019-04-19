@@ -53,6 +53,7 @@ class TextDataset(ONMTDatasetBase):
         # at minimum the src tokens and their indices and potentially also
         # the src and tgt features and alignment information.
         if tgt_examples_iter is not None:
+            print("tt")
             examples_iter = (self._join_dicts(src, tgt) for src, tgt in
                              zip(src_examples_iter, tgt_examples_iter))
         else:
@@ -65,6 +66,7 @@ class TextDataset(ONMTDatasetBase):
         ex, examples_iter = self._peek(examples_iter)
         keys = ex.keys()
 
+        print("kk")
         out_fields = [(k, fields[k]) if k in fields else (k, None)
                       for k in keys]
         example_values = ([ex[k] for k in keys] for ex in examples_iter)
