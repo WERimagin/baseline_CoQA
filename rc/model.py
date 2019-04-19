@@ -139,6 +139,7 @@ class Model(object):
         # Train/Eval mode
         self.network.train(update)
         # Run forward
+        #モデルに投げる
         res = self.network(ex)
         score_s, score_e = res['score_s'], res['score_e']
         output = {
@@ -227,7 +228,9 @@ class Model(object):
             'config': self.config,
             'dir': dirname,
         }
+
         try:
             torch.save(params, os.path.join(dirname, Constants._SAVED_WEIGHTS_FILE))
+
         except BaseException:
             print('[ WARN: Saving failed... continuing anyway. ]')

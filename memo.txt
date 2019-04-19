@@ -1,44 +1,39 @@
+https://github.com/stanfordnlp/coqa-baselines
+
+#corenlpで事前に疑問詞を分けたデータを作成する
+python prepro_interro.py
+
+#test:coqaから疑問詞のみの質問文と文や答えのデータを取り出し、seq2seq用に整形する
+#train:特に何もしません。(#coqaから疑問詞のみの質問文を取り除き、coqa型のデータとして再構築する)
+全てのデータを使って学習。データ数は多い方がいい。
+python prepro_seq2seq.py
+
+#Opennmtのseq2seqで質問文を予測する
+python train \...
+
+#生成した質問文をcoqa型のデータに直す
+python prepro_modify.py
+
+これをDRQA+PGNETの方に渡す
+
+
 prepro
-
-rc
-python scripts/gen_drqa_data.py \
---data_file data/coqa-train-v1.0.json \
---output_file coqa.train.json
-python scripts/gen_drqa_data.py \
---data_file data/coqa-dev-v1.0.json \
---output_file coqa.dev.json
-
- python rc/main.py \
- --trainset data/coqa.train.json \
- --devset data/coqa.dev.json \
- --n_history 2 \
- --dir rc_models \
- --embed_file wordvecs/glove.840B.300d.txt
-
-seq2seq
-
-python scripts/gen_seq2seq_data.py \
---data_file data/coqa-train-v1.0.json \
---n_history 2 --lower \
---output_file data/seq2seq-train-h2
-
-python scripts/gen_seq2seq_data.py \
---data_file data/coqa-dev-v1.0.json \
---n_history 2 --lower \
---output_file data/seq2seq-dev-h2
 
 pipeline
 
+#trainデータのdrqa用の処理
 python3 scripts/gen_pipeline_data.py \
---data_file data/coqa-train-v1.0.json \
+--data_file data/coqa-train-modify.json \
 --output_file1 data/coqa.train.pipeline.json \
 --output_file2 data/seq2seq-train-pipeline
 
+#testデータのdrqa用の処理
 python3 scripts/gen_pipeline_data.py \
- --data_file data/coqa-dev-v1.0.json \
+ --data_file data/coqa-dev-modify-interro-cand1.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
 
+#両方のデータのpgnet用の処理
 python3 seq2seq/preprocess.py \
  -train_src data/seq2seq-train-pipeline-src.txt \
  -train_tgt data/seq2seq-train-pipeline-tgt.txt \
@@ -47,6 +42,7 @@ python3 seq2seq/preprocess.py \
  -save_data data/seq2seq-pipeline \
  -lower -dynamic_dict -src_seq_length 10000
 
+#embedding
 PYTHONPATH=seq2seq \
 python seq2seq/tools/embeddings_to_torch.py \
  -emb_file_enc ~/data/glove.840B.300d.txt \
@@ -56,129 +52,53 @@ python seq2seq/tools/embeddings_to_torch.py \
  -enc_dec dec
 
 
-
-
-
 training
+
+#DrQA
 python rc/main.py \
  --trainset data/coqa.train.pipeline.json \
  --devset data/coqa.dev.pipeline.json \
  --n_history 0 --dir pipeline_models \
  --embed_file ~/data/glove.840B.300d.txt \
  --predict_raw_text n
+
+#PGNet
 python seq2seq/train.py \
-  -data data/seq2seq-pipeline \
-  -save_model pipeline_models/seq2seq_copy \
-  -copy_attn -reuse_copy_attn \
-  -word_vec_size 300 \
-  -pre_word_vecs_enc data/seq2seq-pipeline.embed.enc.pt \
-  -pre_word_vecs_dec data/seq2seq-pipeline.embed.dec.pt \
-  -epochs 50 -gpuid 0 -seed 123
+-data data/seq2seq-pipeline \
+-save_model pipeline_models/seq2seq_copy \
+-copy_attn -reuse_copy_attn \
+-word_vec_size 300 \
+-pre_word_vecs_enc data/seq2seq-pipeline.embed.enc.pt \
+-pre_word_vecs_dec data/seq2seq-pipeline.embed.dec.pt \
+-epochs 40 -gpuid 0 -seed 123
 
 trans
-(rc)
+drqaの翻訳
 python rc/main.py \
 --testset data/coqa.dev.pipeline.json \
 --n_history 0 \
 --pretrained pipeline_models
 
-(prepare for seq2seq from rc)
+drqaのデータをpgnetに投げる用に処理
 python scripts/gen_pipeline_for_seq2seq.py \
 --data_file data/coqa.dev.pipeline.json \
 --output_file pipeline_models/pipeline-seq2seq-src.txt \
 --pred_file pipeline_models/predictions.json
 
-(seq2seq)
+pgnetの翻訳
 python seq2seq/translate.py \
--model pipeline_models/old/seq2seq_copy_acc_37.34_ppl_102.13_e50.pt \
+-model pipeline_models/old/seq2seq_copy_acc_85.00_ppl_2.20_e20.pt \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
 -replace_unk -verbose -gpu 0
 
-python seq2seq/translate.py \
--model pipeline_models/old/seq2seq_copy_acc_37.34_ppl_102.13_e50.pt \
--src pipeline_models/pipeline-seq2seq-src.txt \
--output pipeline_models/pred.txt \
--replace_unk -verbose -gpu 0
-
-
-(evalのための整形)
+評価のためにデータを整形
 python scripts/gen_seq2seq_output.py \
 --data_file data/coqa-dev-v1.0.json \
 --pred_file pipeline_models/pred.txt \
 --output_file pipeline_models/pipeline.prediction.json
 
+評価
 python evaluate-v1.0.py \
 --data-file data/coqa-dev-v1.0.json \
---pred-file pipeline_models/pipeline.prediction.json
-
-python evaluate-v1.0.py \
---data-file data/coqa-dev-v1.0.json \
---pred-file pipeline_models/predictions.json
-
-issue
-I can't get paper's score of DrQA + PGnet.
-I used the pipeline model and n_history is 0.
-I think the dev is 61.5, but the result is not.
-I used CoQA evaluation script for evaluation.
-python evaluate-v1.0.py
---data-file data/coqa-dev-v1.0.json
---pred-file pipeline_models/pipeline.prediction.json
-
-The result is here.
-{
-"children_stories": {
-"em": 11.5,
-"f1": 13.7,
-"turns": 1425
-},
-"literature": {
-"em": 12.7,
-"f1": 13.9,
-"turns": 1630
-},
-"mid-high_school": {
-"em": 12.4,
-"f1": 14.3,
-"turns": 1653
-},
-"news": {
-"em": 10.0,
-"f1": 11.1,
-"turns": 1649
-},
-"wikipedia": {
-"em": 9.6,
-"f1": 11.0,
-"turns": 1626
-},
-"reddit": {
-"em": 0.0,
-"f1": 0.0,
-"turns": 0
-},
-"science": {
-"em": 0.0,
-"f1": 0.0,
-"turns": 0
-},
-"in_domain": {
-"em": 11.2,
-"f1": 12.7,
-"turns": 7983
-},
-"out_domain": {
-"em": 0.0,
-"f1": 0.0,
-"turns": 0
-},
-"overall": {
-"em": 11.2,
-"f1": 12.7,
-"turns": 7983
-}
-}
-
-When I used only DrQA, the score is as expected.
-I think DrQA predicts the answer,but DrQA must predict Evidence in the pipeline model.
-Thank you!
+--pred-file data/pipeline.prediction_his_0.json
