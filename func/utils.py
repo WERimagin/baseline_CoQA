@@ -83,3 +83,31 @@ def make_vec_c(sentences):
             for k,char in enumerate(word):
                 sentence_ex[i,j,k]=char
     return to_var(torch.from_numpy(sentence_ex))
+
+#sentenceを受け取り、tokenizeして返す
+def tokenize(sent):
+    return [token.replace('``','"').replace("''",'"') for token in word_tokenize(sent)]
+
+#context_textを文分割して、answer_start~answer_end(char単位)のスパンが含まれる文を返す
+#やってることはc2iと多分同じアルゴリズム
+def answer_find(context_text,answer_start,answer_end):
+    if answer_start==-1: return ""
+    context=sent_tokenize(context_text)
+    sent_start_id=-1
+    sent_end_id=-1
+    start_id_list=[context_text.find(sent) for sent in context]
+    end_id_list=[start_id_list[i+1] if i+1!=len(context) else len(context_text) for i,sent in enumerate(context)]
+    for i,sent in enumerate(context):
+        start_id=start_id_list[i]
+        end_id=end_id_list[i]
+        if start_id<=answer_start and answer_start<=end_id:
+            sent_start_id=i
+        if start_id<=answer_end and answer_end<=end_id:
+            sent_end_id=i
+
+    if sent_start_id==-1 or sent_end_id==-1:
+        print("error")
+        exit(-1)
+    answer_sent=" ".join(context[sent_start_id:sent_end_id+1])
+
+    return answer_sent

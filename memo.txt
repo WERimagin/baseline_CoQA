@@ -8,8 +8,8 @@ python prepro_interro.py
 全てのデータを使って学習。データ数は多い方がいい。
 python prepro_seq2seq.py
 
-#Opennmtのseq2seqで質問文を予測する
-python train \...
+#Opennmtの訓練済みのseq2seqで質問文を予測する
+python translate \...
 
 #生成した質問文をcoqa型のデータに直す
 python prepro_modify.py

@@ -77,14 +77,17 @@ def c2wpointer(context_text,context,answer_start,answer_end):#answer_start,end�
             break
     return answer_start_w,answer_end_w
 
-
-
-
-def data_process(input_path,dict_path,train=True):
+def data_process(input_path,dict_path):
     with open(input_path,"r") as f:
         data=json.load(f)
     with open(dict_path,"r") as f:
         corenlp_data=json.load(f)
+
+    modify_data=[]
+    with open(modify_path,"r") as f:
+        for line in f:
+            modify_data.append(line.rstrip())
+
     contexts=[]
     questions=[]
     answer_starts=[]
@@ -93,89 +96,47 @@ def data_process(input_path,dict_path,train=True):
     answers=[]
     sentences=[]
     ids=[]
-    answer_replace=False
-    count=0
-    ans_count=[]
 
-    new_data={"version":"1.0",
-                "data":[]}
+    count=0
+    modify_count=0
 
     for paragraph in tqdm(data["data"]):
         context_text=paragraph["story"].lower()
         question_history=[]
-        new_paragraph={"source": paragraph["source"],
-                        "id": paragraph["id"],
-                        "filename":paragraph["filename"],
-                        "story":paragraph["story"],
-                        "questions":[],
-                        "answers":[]}
-
         for i in range(len(paragraph["questions"])):
             question_dict=paragraph["questions"][i]
             answer_dict=paragraph["answers"][i]
             question_text=question_dict["input_text"].lower()
             answer_text=answer_dict["input_text"].lower()
-            question_history.append((question_text,answer_text))
+            question_history.append(question_text)
 
             span_start=answer_dict["span_start"]
             span_end=answer_dict["span_end"]
             span_text=answer_dict["span_text"]
             turn_id=paragraph["questions"][i]["turn_id"]
 
-            sentence_text=answer_find(context_text,span_start,span_end)
-            sentence_text=" ".join(tokenize(sentence_text))
-            question_text=" ".join(tokenize(question_text))
-
             d=corenlp_data[count]
             count+=1
 
-            #完全な文、new_dataにparagraphを入れていく
-            #疑問詞のみのもの
-            if train==False:
-                #解答がないものは元の文を推定できないため除く
-                if d["vb_check"]==False and d["interro"]!="" and span_start>=0:
-                    sentence_text=" ".join([sentence_text,"<SEP>",d["interro"]])
-                    sentences.append(sentence_text)
-                    questions.append(question_text)
-                    question_dict["interro_question"]=True
-                else: question_dict["interro_question"]=False
-                new_paragraph["questions"].append(question_dict)
-                new_paragraph["answers"].append(answer_dict)
+            #解答がないものは元の文を推定できないため除く
+            if d["vb_check"]==False and d["interro"]!="" and span_start>=0:
+                paragraph["questions"][i]["input_text"]=modify_data[modify_count]
+                modify_count+=1
 
-            #完全な文、new_dataにparagraphを入れていく
-            #question_dictに疑問詞のみの文かどうかのチェックを入れる
-            elif train==True:
-                if d["vb_check"]==True and d["interro"]!="": question_dict["interro_question"]=True
-                else: question_dict["interro_question"]=False
-                new_paragraph["questions"].append(question_dict)
-                new_paragraph["answers"].append(answer_dict)
 
-        new_data["data"].append(new_paragraph)
+    with open("data/coqa-dev-modify.json","w")as f:
+        json.dump(data,f,indent=4)
 
-    if train:
-        print("data size:{}".format(count))
-        with open("data/coqa-train-modify.json","w")as f:
-            json.dump(new_data,f,indent=4)
 
-    else:
-        print("data size:{}".format(count))
-        print("interro sentence:{}".format(len(sentences)))
-
-        with open("data/coqa-dev-modify.json","w")as f:
-            json.dump(new_data,f,indent=4)
-        with open("data/coqa-src-dev.txt","w")as f:
-            for line in sentences:
-                f.write(line+"\n")
-        with open("data/coqa-tgt-dev.txt","w")as f:
-            for line in questions:
-                f.write(line+"\n")
 
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
-            train=False
+            modify_path="data/coqa-pred-dev-interro.txt"
             )
-
+"""
 data_process(input_path="data/coqa-train-v1.0.json",
-            dict_path="data/coqa-interro-train.json",
-            train=True
+            output_path="data/coqa-train-modify.json",
+            dict_path="data/coqa-train-corenlp.json",
+            modify_path="data/pred_coqa-train-{}.txt".format(type)
             )
+"""
