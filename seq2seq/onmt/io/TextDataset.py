@@ -363,6 +363,7 @@ class ShardedTextCorpusIterator(object):
                         raise StopIteration
 
                 line = self.corpus.readline()
+                print(line)
                 if line == '':
                     self.eof = True
                     self.corpus.close()
