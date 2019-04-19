@@ -9,7 +9,11 @@ python prepro_interro.py
 python prepro_seq2seq.py
 
 #Opennmtの訓練済みのseq2seqで質問文を予測する
-python translate \...
+python translate.py \
+-src data/coqa-src-dev.txt \
+-output pred.txt \
+-replace_unk -dynamic_dict \
+-model model_data/
 
 #生成した質問文をcoqa型のデータに直す
 python prepro_modify.py
@@ -29,7 +33,7 @@ python3 scripts/gen_pipeline_data.py \
 
 #testデータのdrqa用の処理
 python3 scripts/gen_pipeline_data.py \
- --data_file data/coqa-dev-modify-interro-cand1.json \
+ --data_file data/coqa-dev-v1.0.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
 
@@ -51,6 +55,14 @@ python seq2seq/tools/embeddings_to_torch.py \
  -output_file data/seq2seq-pipeline.embed \
  -enc_dec dec
 
+ #embedding
+ PYTHONPATH=seq2seq \
+ python seq2seq/tools/embeddings_to_torch.py \
+  -emb_file_enc ~/data/glove.840B.300d.txt \
+  -emb_file_dec ~/data/glove.840B.300d.txt \
+  -dict_file data/seq2seq-pipeline.vocab.pt \
+  -output_file data/seq2seq-pipeline.embed \
+  -enc_dec enc
 
 training
 

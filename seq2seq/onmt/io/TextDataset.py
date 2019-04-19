@@ -81,7 +81,6 @@ class TextDataset(ONMTDatasetBase):
                 ex_values, out_fields)
             src_size += len(example.src)
             out_examples.append(example)
-        print("9")
         def filter_pred(example):
             return 0 < len(example.src) <= src_seq_length \
                 and 0 < len(example.tgt) <= tgt_seq_length
@@ -363,7 +362,6 @@ class ShardedTextCorpusIterator(object):
                         raise StopIteration
 
                 line = self.corpus.readline()
-                print(line)
                 if line == '':
                     self.eof = True
                     self.corpus.close()
