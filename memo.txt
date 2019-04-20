@@ -33,7 +33,7 @@ python3 scripts/gen_pipeline_data.py \
 
 #testデータのdrqa用の処理
 python3 scripts/gen_pipeline_data.py \
- --data_file data/coqa-dev-interro.json \
+ --data_file data/coqa-dev-noninterro.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
 
@@ -113,8 +113,16 @@ python scripts/gen_seq2seq_output.py \
 
 評価
 python evaluate-v1.0.py \
---data-file data/coqa-dev-interro.json \
+--data-file data/coqa-dev-v1.0.json \
 --pred-file pipeline_models/pipeline.prediction.json
+
+python evaluate-v1.0.py \
+--data-file data/coqa-dev-interro.json \
+--pred-file pipeline_models/pipeline.prediction-interro.json
+
+python evaluate-v1.0.py \
+--data-file data/coqa-dev-noninterro.json \
+--pred-file pipeline_models/pipeline.prediction-noninterro.json
 
 #めも
 DRQAでtestの方がスコアが高いのはadditional answerも評価に用いているから
