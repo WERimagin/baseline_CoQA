@@ -164,6 +164,13 @@ data_process(input_path="data/coqa-dev-v1.0.json",
             use_interro=True,
             not_modify=True
             )
+
+data_process(input_path="data/coqa-dev-v1.0.json",
+            dict_path="data/coqa-interro-dev.json",
+            modify_path="data/coqa-pred-dev-interro.txt",
+            use_interro=True
+            )
+
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             modify_path="data/coqa-pred-dev-interro.txt",
