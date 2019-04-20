@@ -20,6 +20,7 @@ class ModelHandler(object):
     """
 
     def __init__(self, config):
+        logger.info("test2")
         self.logger = ModelLogger(config, dirname=config['dir'], pretrained=config['pretrained'])
         self.dirname = self.logger.dirname
         cuda = config['cuda']

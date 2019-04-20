@@ -117,6 +117,7 @@ def str2bool(v):
 
 
 def print_config(config):
+    logger.info("test")
     print("**************** MODEL CONFIGURATION ****************")
     for key in sorted(config.keys()):
         val = config[key]
