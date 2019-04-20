@@ -133,9 +133,9 @@ def data_process(input_path,dict_path,modify_path,use_interro):
             if d["vb_check"]==False and d["interro"]!="" and span_start>=0 and use_interro==True:
                 sentence_text=answer_find(context_text,span_start,span_end)
                 print(sentence_text)
-                print(sentence_text)
                 print(question_text)
                 print(modify_data[modify_count])
+                print()
 
                 question_dict["input_text"]=modify_data[modify_count]
                 new_paragraph["questions"].append(question_dict)
