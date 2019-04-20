@@ -16,8 +16,6 @@ main
     modelHandler.test
 """
 
-logger=get_logger("log.txt")
-
 def set_random_seed(seed):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
@@ -117,7 +115,6 @@ def str2bool(v):
 
 
 def print_config(config):
-    logger.info("test")
     print("**************** MODEL CONFIGURATION ****************")
     for key in sorted(config.keys()):
         val = config[key]

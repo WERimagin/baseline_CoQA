@@ -10,6 +10,7 @@ from utils.timer import Timer
 from utils.logger import ModelLogger
 from utils.eval_utils import AverageMeter
 from utils.data_utils import sanitize_input, vectorize_input
+from utils.logger import get_logger
 
 from tqdm import tqdm
 
@@ -20,7 +21,6 @@ class ModelHandler(object):
     """
 
     def __init__(self, config):
-        logger.info("test2")
         self.logger = ModelLogger(config, dirname=config['dir'], pretrained=config['pretrained'])
         self.dirname = self.logger.dirname
         cuda = config['cuda']
@@ -74,6 +74,7 @@ class ModelHandler(object):
         self.is_test = False
 
     def train(self):
+        textlogger=get_logger("log.txt")
         if self.train_loader is None or self.dev_loader is None:
             print("No training set or dev set specified -- skipped training.")
             return
@@ -87,7 +88,7 @@ class ModelHandler(object):
             self._run_epoch(self.dev_loader, training=False, verbose=self.config['verbose'])
             timer.interval("Validation Epoch {}".format(self._epoch))
             format_str = "Validation Epoch {} -- F1: {:0.2f}, EM: {:0.2f} --"
-            print(format_str.format(self._epoch, self._dev_f1.mean(), self._dev_em.mean()))
+            textlogger.info(format_str.format(self._epoch, self._dev_f1.mean(), self._dev_em.mean()))
 
         self._best_f1 = self._dev_f1.mean()
         self._best_em = self._dev_em.mean()
@@ -98,18 +99,18 @@ class ModelHandler(object):
         while self._stop_condition(self._epoch):
             self._epoch += 1
 
-            print("\n>>> Train Epoch: [{} / {}]".format(self._epoch, self.config['max_epochs']))
+            textlogger.info("\n>>> Train Epoch: [{} / {}]".format(self._epoch, self.config['max_epochs']))
             self._run_epoch(self.train_loader, training=True, verbose=self.config['verbose'])
             train_epoch_time = timer.interval("Training Epoch {}".format(self._epoch))
             format_str = "Training Epoch {} -- Loss: {:0.4f}, F1: {:0.2f}, EM: {:0.2f} --"
-            print(format_str.format(self._epoch, self._train_loss.mean(),
+            textlogger.info(format_str.format(self._epoch, self._train_loss.mean(),
                   self._train_f1.mean(), self._train_em.mean()))
 
-            print("\n>>> Dev Epoch: [{} / {}]".format(self._epoch, self.config['max_epochs']))
+            textlogger.info("\n>>> Dev Epoch: [{} / {}]".format(self._epoch, self.config['max_epochs']))
             self._run_epoch(self.dev_loader, training=False, verbose=self.config['verbose'])
             timer.interval("Validation Epoch {}".format(self._epoch))
             format_str = "Validation Epoch {} -- F1: {:0.2f}, EM: {:0.2f} --"
-            print(format_str.format(self._epoch, self._dev_f1.mean(), self._dev_em.mean()))
+            textlogger.info(format_str.format(self._epoch, self._dev_f1.mean(), self._dev_em.mean()))
 
             #精度がよかった場合、最高のだけ保存
             if self._best_f1 <= self._dev_f1.mean():  # Can be one of loss, f1, or em.
@@ -118,7 +119,7 @@ class ModelHandler(object):
                 self._best_em = self._dev_em.mean()
                 if self.config['save_params']:
                     self.model.save(self.dirname)
-                print("!!! Updated: F1: {:0.2f}, EM: {:0.2f}".format(self._best_f1, self._best_em))
+                textlogger.info("!!! Updated: F1: {:0.2f}, EM: {:0.2f}".format(self._best_f1, self._best_em))
 
             self._reset_metrics()
             self.logger.log(self._train_loss.last, Constants._TRAIN_LOSS_EPOCH_LOG)
@@ -131,8 +132,8 @@ class ModelHandler(object):
         timer.finish()
         self.training_time = timer.total
 
-        print("Finished Training: {}".format(self.dirname))
-        print(self.summary())
+        textlogger.info("Finished Training: {}".format(self.dirname))
+        textlogger.info(self.summary())
 
     def test(self):
         if self.test_loader is None:
