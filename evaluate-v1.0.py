@@ -191,7 +191,6 @@ class CoQAEvaluator():
             sources[source]['em_total'] += exact_scores.get(key, 0)
             sources[source]['f1_total'] += f1_scores.get(key, 0)
             sources[source]['turn_count'] += 1
-            print(sources[source]["f1_total"])
 
         scores = OrderedDict()
         in_domain_em_total = 0.0

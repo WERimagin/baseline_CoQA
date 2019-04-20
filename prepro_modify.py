@@ -114,7 +114,7 @@ def data_process(input_path,dict_path,modify_path):
                         "story":paragraph["story"],
                         "questions":[],
                         "answers":[],
-                        "additional_answers"=paragraph["additional_answers"]}
+                        "additional_answers":paragraph["additional_answers"]}
 
         for i in range(len(paragraph["questions"])):
             question_dict=paragraph["questions"][i]
