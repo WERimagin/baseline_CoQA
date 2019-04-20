@@ -2,6 +2,7 @@ import os
 import json
 import sys
 from . import constants as Constants
+import logging
 
 
 class Logger(object):
@@ -57,3 +58,19 @@ class ModelLogger(object):
         path = os.path.join(self.dirname, filename)
         with open(path, 'a') as f:
             f.write('%s\n' % data)
+
+def get_logger(log_file=None):
+    log_format = logging.Formatter("[%(asctime)s %(levelname)s] %(message)s")
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    if log_file and log_file != '':
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setFormatter(log_format)
+        logger.addHandler(file_handler)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(log_format)
+    logger.addHandler(console_handler)
+
+    return logger

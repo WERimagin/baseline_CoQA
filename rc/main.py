@@ -3,6 +3,7 @@ import torch
 import numpy as np
 
 from model_handler import ModelHandler
+from utils.logger import get_logger
 
 ################################################################################
 # Main #
@@ -14,6 +15,8 @@ main
         modelHander.run_epoch(test)
     modelHandler.test
 """
+
+logger=get_logger("log.txt")
 
 def set_random_seed(seed):
     torch.manual_seed(seed)
@@ -127,7 +130,5 @@ def print_config(config):
 
 
 if __name__ == '__main__':
-    print("test")
     args = get_args()
-    print("tttt")
     main(args)
