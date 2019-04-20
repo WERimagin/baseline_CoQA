@@ -142,7 +142,7 @@ def data_process(input_path,dict_path,modify_path):
     if use_interro:
         with open("data/coqa-dev-interro.json","w")as f:
             json.dump(new_data,f,indent=4)
-    else
+    else:
         with open("data/coqa-dev-noninterro.json","w")as f:
             json.dump(new_data,f,indent=4)
 
@@ -151,10 +151,3 @@ data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             modify_path="data/coqa-pred-dev-interro.txt"
             )
-"""
-data_process(input_path="data/coqa-train-v1.0.json",
-            output_path="data/coqa-train-modify.json",
-            dict_path="data/coqa-train-corenlp.json",
-            modify_path="data/pred_coqa-train-{}.txt".format(type)
-            )
-"""
