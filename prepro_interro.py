@@ -172,7 +172,8 @@ type=""
 data_process(input_path="data/coqa-dev-v1.0.json",
             out_path="data/coqa-interro-dev.json"
             )
-
+"""
 data_process(input_path="data/coqa-train-v1.0.json",
             out_path="data/coqa-interro-train.json"
             )
+"""

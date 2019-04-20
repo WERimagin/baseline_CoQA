@@ -9,7 +9,7 @@ import re
 class CoreNLP():
     def __init__(self):
         self.nlp=StanfordCoreNLP('http://localhost:9000')
-        #self.interro_list=["WDT","WP"," WP$","WRB","VB","VBD","VBG","VBN","VBP","VBZ"]
+        self.interro_list=["WHNP","WHADVP","WRB","WHADJP","WDT","WP","WP$","WRB"]
         self.count=-1
 
     #動詞が含まれるかのチェック
@@ -39,7 +39,7 @@ class CoreNLP():
         depth=0
         for i in range(len(parse_text)-1):
             #depthが0の場合かつ、（疑問詞の句構造に未突入、または、すでに疑問詞が見つかっている）
-            if depth==0 and ("WH" not in parse_text[i] or WP_flag==True):
+            if depth==0 and (parse_text[i] not in self.interro_list or WP_flag==True):
                 if parse_text[i]!=")" and parse_text[i+1]==")":
                     NotWP_list.append(parse_text[i])
                 continue
@@ -75,7 +75,7 @@ class CoreNLP():
         depth=0
         for i in range(len(parse_text)-1):
             #depthが0の場合かつ、（疑問詞の句構造に未突入、または、すでに疑問詞が見つかっている）
-            if depth==0 and ("WH" not in parse_text[i] or WP_flag==True):
+            if depth==0 and (parse_text[i] not in self.interro_list or WP_flag==True):
                 if parse_text[i]!=")" and parse_text[i+1]==")":
                     NotWP_list.append(parse_text[i])
                 continue
