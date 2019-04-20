@@ -37,7 +37,7 @@ class CoQAEvaluator():
             multiple_answers = [story['answers']]
             multiple_answers += story['additional_answers'].values()
             for i, qa in enumerate(questions):
-                qid = qa['turn_id']-1
+                qid = qa['turn_id']
                 """
                 idのいくつかは除去してるため削除
                 if i + 1 != qid:
@@ -48,7 +48,7 @@ class CoQAEvaluator():
                 print(qid)
                 for j,answers in enumerate(multiple_answers):
                     if j==0:answer=answers[i]
-                    else: answer = answers[qid]
+                    else: answer = answers[qid-1]
                     """
                     if qid != answer['turn_id']:
                         sys.stderr.write("Question turn id does match answer: {} {}\n".format(qa, answer))
