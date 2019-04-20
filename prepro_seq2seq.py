@@ -150,7 +150,8 @@ def data_process(input_path,dict_path,train=True):
                 new_paragraph["questions"].append(question_dict)
                 new_paragraph["answers"].append(answer_dict)
 
-        new_data["data"].append(new_paragraph)
+        if len(new_paragraph["questions"])>0:
+            new_data["data"].append(new_paragraph)
 
     if train:
         print("data size:{}".format(count))
