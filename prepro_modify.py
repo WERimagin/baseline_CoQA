@@ -147,12 +147,16 @@ def data_process(input_path,dict_path,modify_path,use_interro):
         if len(new_paragraph["questions"])>0:
             new_data["data"].append(new_paragraph)
 
-    if use_interro:
-        with open("data/coqa-dev-interro.json","w")as f:
+    if not_modify:
+        with open("data/coqa-dev-notmodify.json","w")as f:
             json.dump(new_data,f,indent=4)
     else:
-        with open("data/coqa-dev-noninterro.json","w")as f:
-            json.dump(new_data,f,indent=4)
+        if use_interro:
+            with open("data/coqa-dev-interro.json","w")as f:
+                json.dump(new_data,f,indent=4)
+        else:
+            with open("data/coqa-dev-noninterro.json","w")as f:
+                json.dump(new_data,f,indent=4)
 
 
 data_process(input_path="data/coqa-dev-v1.0.json",
