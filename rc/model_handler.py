@@ -29,6 +29,7 @@ class ModelHandler(object):
         else:
             self.device = torch.device('cuda' if cuda_id < 0 else 'cuda:%d' % cuda_id)
 
+        #データの読み込み
         datasets = prepare_datasets(config)
         train_set = datasets['train']
         dev_set = datasets['dev']
@@ -41,6 +42,7 @@ class ModelHandler(object):
         self._dev_f1 = AverageMeter()
         self._dev_em = AverageMeter()
 
+        #データのロード
         if train_set:
             self.train_loader = DataLoader(train_set, batch_size=config['batch_size'],
                                            shuffle=config['shuffle'], collate_fn=lambda x: x, pin_memory=True)
@@ -63,6 +65,7 @@ class ModelHandler(object):
         else:
             self.test_loader = None
 
+        #モデルの用意
         self._n_train_examples = 0
         self.model = Model(config, train_set)
         self.model.network = self.model.network.to(self.device)
@@ -107,6 +110,7 @@ class ModelHandler(object):
             format_str = "Validation Epoch {} -- F1: {:0.2f}, EM: {:0.2f} --"
             print(format_str.format(self._epoch, self._dev_f1.mean(), self._dev_em.mean()))
 
+            #精度がよかった場合、最高のだけ保存
             if self._best_f1 <= self._dev_f1.mean():  # Can be one of loss, f1, or em.
                 self._best_epoch = self._epoch
                 self._best_f1 = self._dev_f1.mean()

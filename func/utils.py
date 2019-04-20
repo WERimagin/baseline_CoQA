@@ -3,6 +3,7 @@ import numpy as np
 import torch
 from tqdm import tqdm
 from torch.autograd import Variable
+from nltk.tokenize import word_tokenize,sent_tokenize
 
 
 #使わない

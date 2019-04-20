@@ -7,7 +7,13 @@ from model_handler import ModelHandler
 ################################################################################
 # Main #
 ################################################################################
-
+"""
+main
+    modelHandler.train
+        modelHander.run_epoch(train)
+        modelHander.run_epoch(test)
+    modelHandler.test
+"""
 
 def set_random_seed(seed):
     torch.manual_seed(seed)
@@ -121,5 +127,7 @@ def print_config(config):
 
 
 if __name__ == '__main__':
+    print("test")
     args = get_args()
+    print("tttt")
     main(args)

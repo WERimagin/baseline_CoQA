@@ -27,13 +27,13 @@ pipeline
 
 #trainデータのdrqa用の処理
 python3 scripts/gen_pipeline_data.py \
---data_file data/coqa-train-v1.0.json \
+--data_file data/coqa-train-modify.json \
 --output_file1 data/coqa.train.pipeline.json \
 --output_file2 data/seq2seq-train-pipeline
 
 #testデータのdrqa用の処理
 python3 scripts/gen_pipeline_data.py \
- --data_file data/coqa-dev-v1.0.json \
+ --data_file data/coqa-dev-modify.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
 
@@ -72,7 +72,8 @@ python rc/main.py \
  --devset data/coqa.dev.pipeline.json \
  --n_history 0 --dir pipeline_models \
  --embed_file ~/data/glove.840B.300d.txt \
- --predict_raw_text n
+ --predict_raw_text n \
+ --cuda_id 3
 
 #PGNet
 python seq2seq/train.py \

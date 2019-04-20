@@ -38,6 +38,8 @@ class WordModel(object):
     """
 
     def __init__(self, embed_size=None, filename=None, embed_type='glove', top_n=None, additional_vocab=Counter()):
+
+        #単語ベクトルの読み込み(glove)
         if filename is None:
             if embed_size is None:
                 raise Exception('Either embed_file or embed_size needs to be specified.')
@@ -48,6 +50,7 @@ class WordModel(object):
             self.embed_size = self._model.vector_size
 
         # padding: 0
+        #word2idの構築
         self.vocab = {Constants._UNK_TOKEN: 1}
         if self._model is not None:
             for i, key in enumerate(self._model.vocab):
@@ -55,6 +58,7 @@ class WordModel(object):
                     break
                 self.vocab[key] = len(self.vocab) + 1
 
+        #word2idの構築2
         n_added = 0
         for w, count in additional_vocab.most_common():
             if w not in self.vocab:

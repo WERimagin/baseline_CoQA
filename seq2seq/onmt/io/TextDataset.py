@@ -66,7 +66,6 @@ class TextDataset(ONMTDatasetBase):
         out_fields = [(k, fields[k]) if k in fields else (k, None)
                       for k in keys]
         example_values = ([ex[k] for k in keys] for ex in examples_iter)
-        print("77")
         # If out_examples is a generator, we need to save the filter_pred
         # function in serialization too, which would cause a problem when
         # `torch.save()`. Thus we materialize it as a list.
