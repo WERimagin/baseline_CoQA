@@ -39,14 +39,17 @@ class CoQAEvaluator():
             for i, qa in enumerate(questions):
                 qid = qa['turn_id']
                 """
+                idのいくつかは除去してるため削除
                 if i + 1 != qid:
                     sys.stderr.write("Turn id should match index {}: {}\n".format(i + 1, qa))
                 """
                 gold_answers = []
                 for answers in multiple_answers:
                     answer = answers[i]
+                    """
                     if qid != answer['turn_id']:
                         sys.stderr.write("Question turn id does match answer: {} {}\n".format(qa, answer))
+                    """
                     gold_answers.append(answer['input_text'])
                 key = (story_id, qid)
                 if key in gold_dict:
@@ -169,11 +172,15 @@ class CoQAEvaluator():
         exact_scores, f1_scores = self.get_raw_scores_human()
         return self.get_domain_scores(exact_scores, f1_scores)
 
+    #exact_scoreとf1を計算する
+    #それぞれ辞書。keyはstoryidとturnid
     def model_performance(self, pred_data):
         exact_scores, f1_scores = self.get_raw_scores(pred_data)
         return self.get_domain_scores(exact_scores, f1_scores)
 
     def get_domain_scores(self, exact_scores, f1_scores):
+        #domainをkeyとした辞書を作成
+        #それぞれについてem,f1,countを計算
         sources = {}
         for source in in_domain + out_domain:
             sources[source] = Counter()
@@ -184,6 +191,7 @@ class CoQAEvaluator():
             sources[source]['em_total'] += exact_scores.get(key, 0)
             sources[source]['f1_total'] += f1_scores.get(key, 0)
             sources[source]['turn_count'] += 1
+            print(sources[source]["f1_total"])
 
         scores = OrderedDict()
         in_domain_em_total = 0.0
