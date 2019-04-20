@@ -100,9 +100,19 @@ def data_process(input_path,dict_path,modify_path):
     count=0
     modify_count=0
 
+    new_data={"version":"1.0",
+                "data":[]}
+
     for paragraph in tqdm(data["data"]):
         context_text=paragraph["story"].lower()
         question_history=[]
+        new_paragraph={"source": paragraph["source"],
+                        "id": paragraph["id"],
+                        "filename":paragraph["filename"],
+                        "story":paragraph["story"],
+                        "questions":[],
+                        "answers":[]}
+
         for i in range(len(paragraph["questions"])):
             question_dict=paragraph["questions"][i]
             answer_dict=paragraph["answers"][i]
@@ -119,14 +129,22 @@ def data_process(input_path,dict_path,modify_path):
             count+=1
 
             #解答がないものは元の文を推定できないため除く
-            if d["vb_check"]==False and d["interro"]!="" and span_start>=0:
-                paragraph["questions"][i]["input_text"]=modify_data[modify_count]
+            if d["vb_check"]==False and d["interro"]!="" and span_start>=0 and use_interro==True:
+                question_dict["input_text"]=modify_data[modify_count]
+                new_paragraph["questions"].append(question_dict)
+                new_paragraph["answers"].append(answer_dict)
                 modify_count+=1
+            elif use_interro==False:
+                new_paragraph["questions"].append(question_dict)
+                new_paragraph["answers"].append(answer_dict)
+        new_data["data"].append(new_paragraph)
 
-
-    with open("data/coqa-dev-modify.json","w")as f:
-        json.dump(data,f,indent=4)
-
+    if use_interro:
+        with open("data/coqa-dev-interro.json","w")as f:
+            json.dump(new_data,f,indent=4)
+    else
+        with open("data/coqa-dev-noninterro.json","w")as f:
+            json.dump(new_data,f,indent=4)
 
 
 data_process(input_path="data/coqa-dev-v1.0.json",

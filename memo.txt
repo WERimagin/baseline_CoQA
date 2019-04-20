@@ -90,7 +90,7 @@ drqaの翻訳
 python rc/main.py \
 --testset data/coqa.dev.pipeline.json \
 --n_history 0 \
---pretrained pipeline_models
+--pretrained pipeline_models --cuda_id 3
 
 drqaのデータをpgnetに投げる用に処理
 python scripts/gen_pipeline_for_seq2seq.py \
@@ -100,10 +100,10 @@ python scripts/gen_pipeline_for_seq2seq.py \
 
 pgnetの翻訳
 python seq2seq/translate.py \
--model pipeline_models/old/seq2seq_copy_acc_85.00_ppl_2.20_e20.pt \
+-model pipeline_models/seq2seq_copy_acc_84.73_ppl_2.27_e40.pt \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
--replace_unk -verbose -gpu 0
+-replace_unk -verbose -gpu 3
 
 評価のためにデータを整形
 python scripts/gen_seq2seq_output.py \
@@ -113,8 +113,8 @@ python scripts/gen_seq2seq_output.py \
 
 評価
 python evaluate-v1.0.py \
---data-file data/coqa-dev-v1.0.json \
---pred-file data/pipeline.prediction_his_0.json
+--data-file data/coqa-dev-modify.json \
+--pred-file pipeline_models/pipeline.prediction.json
 
 #めも
 DRQAでtestの方がスコアが高いのはadditional answerも評価に用いているから
