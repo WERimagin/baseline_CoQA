@@ -139,7 +139,8 @@ def data_process(input_path,dict_path,modify_path):
             elif use_interro==False:
                 new_paragraph["questions"].append(question_dict)
                 new_paragraph["answers"].append(answer_dict)
-        new_data["data"].append(new_paragraph)
+        if len(new_paragraph["questions"])>0:
+            new_data["data"].append(new_paragraph)
 
     if use_interro:
         with open("data/coqa-dev-interro.json","w")as f:
