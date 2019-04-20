@@ -77,7 +77,7 @@ def c2wpointer(context_text,context,answer_start,answer_end):#answer_start,endã‚
             break
     return answer_start_w,answer_end_w
 
-def data_process(input_path,dict_path,modify_path):
+def data_process(input_path,dict_path,modify_path,use_interro):
     with open(input_path,"r") as f:
         data=json.load(f)
     with open(dict_path,"r") as f:
@@ -87,8 +87,6 @@ def data_process(input_path,dict_path,modify_path):
     with open(modify_path,"r") as f:
         for line in f:
             modify_data.append(line.rstrip())
-
-    use_interro=True
 
     contexts=[]
     questions=[]
@@ -153,5 +151,11 @@ def data_process(input_path,dict_path,modify_path):
 
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
-            modify_path="data/coqa-pred-dev-interro.txt"
+            modify_path="data/coqa-pred-dev-interro.txt",
+            useinterro=True
+            )
+data_process(input_path="data/coqa-dev-v1.0.json",
+            dict_path="data/coqa-interro-dev.json",
+            modify_path="data/coqa-pred-dev-interro.txt",
+            useinterro=False
             )
