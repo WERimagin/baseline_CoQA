@@ -83,7 +83,7 @@ python seq2seq/train.py \
 -word_vec_size 300 \
 -pre_word_vecs_enc data/seq2seq-pipeline.embed.enc.pt \
 -pre_word_vecs_dec data/seq2seq-pipeline.embed.dec.pt \
--epochs 40 -gpuid 0 -seed 123
+-epochs 20 -gpuid 2 -seed 123 -log_file "log_pgnet.txt"
 
 trans
 drqaの翻訳
@@ -115,3 +115,7 @@ python scripts/gen_seq2seq_output.py \
 python evaluate-v1.0.py \
 --data-file data/coqa-dev-v1.0.json \
 --pred-file data/pipeline.prediction_his_0.json
+
+#めも
+DRQAでtestの方がスコアが高いのはadditional answerも評価に用いているから
+Yes/Noはseq2seqの方で出力

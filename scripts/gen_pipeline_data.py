@@ -176,11 +176,11 @@ if __name__ == '__main__':
                 chosen_text = chosen_text[:-1]
                 end -= 1
             input_text = _qas['answer'].strip().lower()
+
             #spanの中に解答がある場合はそのまま解答をspanにする
             #ない場合にはspanをspanとして扱う。
             #find_span:文字と単語の変換
             #pipelineの場合はそもそもanswerではなく、spanを扱うべき？
-
             if input_text in chosen_text:
                 i = chosen_text.find(input_text)
                 _qas['answer_span'] = find_span(_datum['annotated_context']['offsets'],

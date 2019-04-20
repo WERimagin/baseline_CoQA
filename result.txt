@@ -1,0 +1,19 @@
+normal
+{
+  python rc/main.py \
+   --trainset data/coqa.train.pipeline.json \
+   --devset data/coqa.dev.pipeline.json \
+   --n_history 0 --dir pipeline_models \
+   --embed_file ~/data/glove.840B.300d.txt \
+   --predict_raw_text n \
+   --cuda_id 3
+
+   python seq2seq/train.py \
+   -data data/seq2seq-pipeline \
+   -save_model pipeline_models/seq2seq_copy \
+   -copy_attn -reuse_copy_attn \
+   -word_vec_size 300 \
+   -pre_word_vecs_enc data/seq2seq-pipeline.embed.enc.pt \
+   -pre_word_vecs_dec data/seq2seq-pipeline.embed.dec.pt \
+   -epochs 20 -gpuid 2 -seed 123 -log_file "log_pgnet.txt"
+}

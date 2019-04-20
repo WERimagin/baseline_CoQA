@@ -148,6 +148,7 @@ class Model(object):
             'loss': 0.0
         }
         # Loss cannot be computed for test-time as we may not have targets
+        #始点と終点からスコアの計算
         if update:
             # Compute loss and accuracies
             loss = self.compute_span_loss(score_s, score_e, res['targets'])

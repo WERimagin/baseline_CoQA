@@ -147,6 +147,7 @@ class DrQA(nn.Module):
         question_hidden = weighted_avg(question_hiddens, q_merge_weights)
 
         # Predict start and end positions
+        #始点と終点の予測
         start_scores = self.start_attn(doc_hiddens, question_hidden, xd_mask)
         if self.config['span_dependency']:
             question_hidden = torch.cat([question_hidden, (doc_hiddens * start_scores.exp().unsqueeze(2)).sum(1)], 1)
