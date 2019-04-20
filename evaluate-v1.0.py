@@ -22,6 +22,8 @@ class CoQAEvaluator():
     def __init__(self, gold_file):
         self.gold_data, self.id_to_source = CoQAEvaluator.gold_answers_to_dict(gold_file)
 
+    #データの読み込み
+    #story_idとidを鍵にしてデータを構築
     @staticmethod
     def gold_answers_to_dict(gold_file):
         dataset = json.load(open(gold_file))
@@ -36,8 +38,10 @@ class CoQAEvaluator():
             multiple_answers += story['additional_answers'].values()
             for i, qa in enumerate(questions):
                 qid = qa['turn_id']
+                """
                 if i + 1 != qid:
                     sys.stderr.write("Turn id should match index {}: {}\n".format(i + 1, qa))
+                """
                 gold_answers = []
                 for answers in multiple_answers:
                     answer = answers[i]
