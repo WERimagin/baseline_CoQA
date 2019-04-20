@@ -1,5 +1,5 @@
 python3 scripts/gen_pipeline_data.py \
- --data_file data/coqa-dev-noninterro.json \
+ --data_file data/coqa-dev-interro.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
 
@@ -20,6 +20,10 @@ python seq2seq/translate.py \
 -replace_unk -verbose -gpu 3
 
 python scripts/gen_seq2seq_output.py \
---data_file data/coqa-dev-noninterro.json \
+--data_file data/coqa-dev-interro.json \
 --pred_file pipeline_models/pred.txt \
---output_file pipeline_models/pipeline.prediction-noninterro.json
+--output_file pipeline_models/pipeline.prediction-interro.json
+
+python evaluate-v1.0.py \
+--data-file data/coqa-dev-interro.json \
+--pred-file pipeline_models/pipeline.prediction-interro.json
