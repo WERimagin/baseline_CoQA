@@ -37,7 +37,7 @@ class CoQAEvaluator():
             multiple_answers = [story['answers']]
             multiple_answers += story['additional_answers'].values()
             for i, qa in enumerate(questions):
-                qid = qa['turn_id']
+                qid = qa['turn_id']-1
                 """
                 idのいくつかは除去してるため削除
                 if i + 1 != qid:
