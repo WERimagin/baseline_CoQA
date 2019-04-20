@@ -27,7 +27,7 @@ def main(args):
     set_random_seed(args['random_seed'])
     model = ModelHandler(args)
     model.train()
-    model."test"()
+    model.test()
 
 ################################################################################
 # ArgParse and Helper Functions #
