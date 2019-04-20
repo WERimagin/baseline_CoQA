@@ -44,6 +44,8 @@ class CoQAEvaluator():
                     sys.stderr.write("Turn id should match index {}: {}\n".format(i + 1, qa))
                 """
                 gold_answers = []
+                print(i)
+                print(qid)
                 for answers in multiple_answers:
                     answer = answers[qid]
                     """
