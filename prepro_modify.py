@@ -88,7 +88,7 @@ def data_process(input_path,dict_path,modify_path):
         for line in f:
             modify_data.append(line.rstrip())
 
-    use_interro=True
+    use_interro=False
 
     contexts=[]
     questions=[]
