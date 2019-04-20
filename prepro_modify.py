@@ -152,10 +152,10 @@ def data_process(input_path,dict_path,modify_path,use_interro):
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             modify_path="data/coqa-pred-dev-interro.txt",
-            useinterro=True
+            use_interro=True
             )
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             modify_path="data/coqa-pred-dev-interro.txt",
-            useinterro=False
+            use_interro=False
             )
