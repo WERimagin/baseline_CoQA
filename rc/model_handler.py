@@ -72,11 +72,12 @@ class ModelHandler(object):
         self.model.network = self.model.network.to(self.device)
         self.config = self.model.config
         self.is_test = False
+        self.textlogger=get_logger("log.txt")
 
     def train(self):
-        textlogger=get_logger("log.txt")
+
         if self.train_loader is None or self.dev_loader is None:
-            print("No training set or dev set specified -- skipped training.")
+            self.textlogger.info("No training set or dev set specified -- skipped training.")
             return
 
         self.is_test = False
@@ -84,11 +85,11 @@ class ModelHandler(object):
         self._epoch = self._best_epoch = 0
 
         if self.dev_loader is not None:
-            print("\n>>> Dev Epoch: [{} / {}]".format(self._epoch, self.config['max_epochs']))
+            self.textlogger.info("\n>>> Dev Epoch: [{} / {}]".format(self._epoch, self.config['max_epochs']))
             self._run_epoch(self.dev_loader, training=False, verbose=self.config['verbose'])
             timer.interval("Validation Epoch {}".format(self._epoch))
             format_str = "Validation Epoch {} -- F1: {:0.2f}, EM: {:0.2f} --"
-            textlogger.info(format_str.format(self._epoch, self._dev_f1.mean(), self._dev_em.mean()))
+            self.textlogger.info(format_str.format(self._epoch, self._dev_f1.mean(), self._dev_em.mean()))
 
         self._best_f1 = self._dev_f1.mean()
         self._best_em = self._dev_em.mean()
@@ -99,18 +100,18 @@ class ModelHandler(object):
         while self._stop_condition(self._epoch):
             self._epoch += 1
 
-            textlogger.info("\n>>> Train Epoch: [{} / {}]".format(self._epoch, self.config['max_epochs']))
+            self.textlogger.info("\n>>> Train Epoch: [{} / {}]".format(self._epoch, self.config['max_epochs']))
             self._run_epoch(self.train_loader, training=True, verbose=self.config['verbose'])
             train_epoch_time = timer.interval("Training Epoch {}".format(self._epoch))
             format_str = "Training Epoch {} -- Loss: {:0.4f}, F1: {:0.2f}, EM: {:0.2f} --"
-            textlogger.info(format_str.format(self._epoch, self._train_loss.mean(),
+            self.textlogger.info(format_str.format(self._epoch, self._train_loss.mean(),
                   self._train_f1.mean(), self._train_em.mean()))
 
-            textlogger.info("\n>>> Dev Epoch: [{} / {}]".format(self._epoch, self.config['max_epochs']))
+            self.textlogger.info("\n>>> Dev Epoch: [{} / {}]".format(self._epoch, self.config['max_epochs']))
             self._run_epoch(self.dev_loader, training=False, verbose=self.config['verbose'])
             timer.interval("Validation Epoch {}".format(self._epoch))
             format_str = "Validation Epoch {} -- F1: {:0.2f}, EM: {:0.2f} --"
-            textlogger.info(format_str.format(self._epoch, self._dev_f1.mean(), self._dev_em.mean()))
+            self.textlogger.info(format_str.format(self._epoch, self._dev_f1.mean(), self._dev_em.mean()))
 
             #精度がよかった場合、最高のだけ保存
             if self._best_f1 <= self._dev_f1.mean():  # Can be one of loss, f1, or em.
@@ -119,7 +120,7 @@ class ModelHandler(object):
                 self._best_em = self._dev_em.mean()
                 if self.config['save_params']:
                     self.model.save(self.dirname)
-                textlogger.info("!!! Updated: F1: {:0.2f}, EM: {:0.2f}".format(self._best_f1, self._best_em))
+                self.textlogger.info("!!! Updated: F1: {:0.2f}, EM: {:0.2f}".format(self._best_f1, self._best_em))
 
             self._reset_metrics()
             self.logger.log(self._train_loss.last, Constants._TRAIN_LOSS_EPOCH_LOG)
@@ -132,12 +133,12 @@ class ModelHandler(object):
         timer.finish()
         self.training_time = timer.total
 
-        textlogger.info("Finished Training: {}".format(self.dirname))
-        textlogger.info(self.summary())
+        self.textlogger.info("Finished Training: {}".format(self.dirname))
+        self.textlogger.info(self.summary())
 
     def test(self):
         if self.test_loader is None:
-            print("No testing set specified -- skipped testing.")
+            self.textlogger.info("No testing set specified -- skipped testing.")
             return
 
         self.is_test = True
@@ -160,9 +161,9 @@ class ModelHandler(object):
         test_em = self._dev_em.mean()
 
         timer.finish()
-        print(self.report(self._n_test_batches, None, test_f1, test_em, mode='test'))
+        self.textlogger.info(self.report(self._n_test_batches, None, test_f1, test_em, mode='test'))
         self.logger.log([test_f1, test_em], Constants._TEST_EVAL_LOG)
-        print("Finished Testing: {}".format(self.dirname))
+        self.textlogger.info("Finished Testing: {}".format(self.dirname))
 
     def _run_epoch(self, data_loader, training=True, verbose=10, out_predictions=False):
         start_time = time.time()
@@ -186,8 +187,8 @@ class ModelHandler(object):
 
             if (verbose > 0) and (step % verbose == 0):
                 mode = "train" if training else ("test" if self.is_test else "dev")
-                print(self.report(step, loss, f1 * 100, em * 100, mode))
-                print('used_time: {:0.2f}s'.format(time.time() - start_time))
+                self.textlogger.info(self.report(step, loss, f1 * 100, em * 100, mode))
+                self.textlogger.info('used_time: {:0.2f}s'.format(time.time() - start_time))
 
             if out_predictions:
                 for id, prediction, span in zip(input_batch['id'], res['predictions'], res['spans']):
