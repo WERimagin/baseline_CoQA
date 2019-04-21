@@ -162,7 +162,7 @@ def data_process(input_path,out_path):
                                 "vb_check":vb_check})
 
     with open(out_path,"w")as f:
-        json.dump(dump_data,f)
+        json.dump(dump_data,f,indent=4)
 
 #main
 #coqaのjsonファイルからcorenlpを用いて疑問詞句を前もって抽出

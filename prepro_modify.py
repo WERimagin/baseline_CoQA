@@ -132,6 +132,7 @@ def data_process(input_path,dict_path,modify_path,use_interro,not_modify=False):
             #解答がないものは元の文を推定できないため除く
             if d["vb_check"]==False and d["interro"]!="" and span_start>=0 and use_interro==True:
                 #sentence_text=answer_find(context_text,span_start,span_end)
+                print(json.dumps(d,indent=4))
                 if not_modify==True:
                     new_paragraph["questions"].append(question_dict)
                     new_paragraph["answers"].append(answer_dict)
