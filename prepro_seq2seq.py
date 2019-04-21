@@ -133,22 +133,18 @@ def data_process(input_path,dict_path,train=True):
 
             #完全な文、new_dataにparagraphを入れていく
             #疑問詞のみのもの
-            if train==False:
-                print(json.dumps(d,indent=4))
-                #解答がないものは元の文を推定できないため除く
-                if d["vb_check"]==False and d["interro"]!="" and span_start>=0:
-                    print(len(questions))
-                    print("\t\t{}".format(question_text))
-                    if question_text[-1]!="?": interro=" ".join([question_text,"?"])
-                    else: interro=question_text
-                    sentence_text=" ".join([sentence_text,"<SEP>",interro])
-                    sentences.append(sentence_text)
-                    questions.append(question_text)
-                    question_dict["interro_question"]=True
-                else: question_dict["interro_question"]=False
-                new_paragraph["questions"].append(question_dict)
-                new_paragraph["answers"].append(answer_dict)
 
+            #解答がないものは元の文を推定できないため除く
+            if d["vb_check"]==False and d["interro"]!="" and span_start>=0:
+                if question_text[-1]!="?": interro=" ".join([question_text,"?"])
+                else: interro=question_text
+                sentence_text=" ".join([sentence_text,"<SEP>",interro])
+                sentences.append(sentence_text)
+                questions.append(question_text)
+            new_paragraph["questions"].append(question_dict)
+            new_paragraph["answers"].append(answer_dict)
+
+            """
             #完全な文、new_dataにparagraphを入れていく
             #question_dictに疑問詞のみの文かどうかのチェックを入れる
             elif train==True:
@@ -156,36 +152,29 @@ def data_process(input_path,dict_path,train=True):
                 else: question_dict["interro_question"]=False
                 new_paragraph["questions"].append(question_dict)
                 new_paragraph["answers"].append(answer_dict)
+            """
 
         if len(new_paragraph["questions"])>0:
             new_data["data"].append(new_paragraph)
 
-    if train:
-        print("data size:{}".format(count))
-        with open("data/coqa-train-modify.json","w")as f:
-            json.dump(new_data,f,indent=4)
+    type="train" if train else "dev"
+    print("data size:{}".format(count))
+    print("interro sentence:{}".format(len(sentences)))
 
-    else:
-        print("data size:{}".format(count))
-        print("interro sentence:{}".format(len(sentences)))
+    with open("data/coqa-src-{}.txt".format(type),"w")as f:
+        for line in sentences:
+            f.write(line+"\n")
+    with open("data/coqa-tgt-{}.txt".format(type),"w")as f:
+        for line in questions:
+            f.write(line+"\n")
 
-        with open("data/coqa-dev-modify.json","w")as f:
-            json.dump(new_data,f,indent=4)
-        with open("data/coqa-src-dev.txt","w")as f:
-            for line in sentences:
-                f.write(line+"\n")
-        with open("data/coqa-tgt-dev.txt","w")as f:
-            for line in questions:
-                f.write(line+"\n")
 
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             train=False
             )
 
-"""
 data_process(input_path="data/coqa-train-v1.0.json",
             dict_path="data/coqa-interro-train.json",
             train=True
             )
-"""

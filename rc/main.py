@@ -46,6 +46,7 @@ def get_args():
     parser.add_argument('--cuda', type=str2bool, default=True, help='Run network on cuda (GPU) or not.')
     parser.add_argument('--cuda_id', type=int, default=-1, help='Specify a CUDA id.')
     parser.add_argument('--debug', type=str2bool, default=False)
+    
 
     parser.add_argument('--n_history', type=int, default=0)
     parser.add_argument('--cased', type=str2bool, default=True, help='Cased or uncased version.')

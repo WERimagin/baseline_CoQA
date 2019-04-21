@@ -28,6 +28,10 @@ python evaluate-v1.0.py \
 --data-file data/coqa-dev-interro.json \
 --pred-file pipeline_models/pipeline.prediction-interro.json
 
+python evaluate-modify.py \
+--data-file data/coqa-dev-interro.json \
+--pred-file data/pipeline.prediction-interroonly.json
+
 
 
 python3 scripts/gen_pipeline_data.py \
@@ -52,7 +56,7 @@ python seq2seq/translate.py \
 -replace_unk -verbose -gpu 3
 
 python scripts/gen_seq2seq_output.py \
---data_file data/coqa-dev-interro.json \
+--data_file data/coqa-dev-notmodify.json \
 --pred_file pipeline_models/pred.txt \
 --output_file pipeline_models/pipeline.prediction-notmodify.json
 
@@ -64,7 +68,7 @@ python evaluate-v1.0.py \
 
 
 python3 scripts/gen_pipeline_data.py \
- --data_file data/coqa-dev-v1.0.json \
+ --data_file data/coqa-dev-modify.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
 
@@ -85,10 +89,10 @@ python seq2seq/translate.py \
 -replace_unk -verbose -gpu 3
 
 python scripts/gen_seq2seq_output.py \
---data_file data/coqa-dev-interro.json \
+--data_file data/coqa-dev-v1.0.json \
 --pred_file pipeline_models/pred.txt \
 --output_file pipeline_models/pipeline.prediction-normal.json
 
 python evaluate-v1.0.py \
 --data-file data/coqa-dev-v1.0.json \
---pred-file pipeline_models/pipeline.prediction-normal.json
+--pred-file data/pipeline.prediction_interro_his_0.json

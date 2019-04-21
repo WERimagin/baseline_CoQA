@@ -93,8 +93,9 @@ class ModelHandler(object):
 
         self._best_f1 = self._dev_f1.mean()
         self._best_em = self._dev_em.mean()
+        savename="{}_f1_{}_em_{}".format(self.dirname,self._best_f1,self._best_em)
         if self.config['save_params']:
-            self.model.save(self.dirname)
+            self.model.save(savename)
         self._reset_metrics()
 
         while self._stop_condition(self._epoch):
