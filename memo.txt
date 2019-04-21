@@ -11,7 +11,7 @@ python prepro_seq2seq.py
 #Opennmtの訓練済みのseq2seqで質問文を予測する
 python translate.py \
 -src data/coqa-src-dev.txt \
--output pred.txt \
+-output coqa-pred-dev-interro.txt \
 -replace_unk -dynamic_dict \
 -model model_data/
 

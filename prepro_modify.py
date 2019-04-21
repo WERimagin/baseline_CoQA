@@ -157,7 +157,7 @@ def data_process(input_path,dict_path,modify_path,use_interro,not_modify=False):
             with open("data/coqa-dev-noninterro.json","w")as f:
                 json.dump(new_data,f,indent=4)
 
-
+#疑問詞だけの質問文をそのままデータに（f1で48程度）
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             modify_path="data/coqa-pred-dev-interro.txt",
@@ -165,12 +165,14 @@ data_process(input_path="data/coqa-dev-v1.0.json",
             not_modify=True
             )
 
+#疑問詞だけの質問文を補完したもの
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             modify_path="data/coqa-pred-dev-interro.txt",
             use_interro=True
             )
 
+#疑問詞だけの質問文以外
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             modify_path="data/coqa-pred-dev-interro.txt",

@@ -189,7 +189,7 @@ class CoQAEvaluator():
         for story_id, turn_id in self.gold_data:
             key = (story_id, turn_id)
             source = self.id_to_source[story_id]
-            print(f1_scores.get(key, 0))
+
             sources[source]['em_total'] += exact_scores.get(key, 0)
             sources[source]['f1_total'] += f1_scores.get(key, 0)
             sources[source]['turn_count'] += 1
@@ -231,6 +231,7 @@ class CoQAEvaluator():
         scores["overall"] = {'em': round(em_total / max(1, turn_count) * 100, 1),
                              'f1': round(f1_total / max(1, turn_count) * 100, 1),
                              'turns': turn_count}
+        print(turn_count)
 
         return scores
 

@@ -177,8 +177,9 @@ data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             train=False
             )
-
+"""
 data_process(input_path="data/coqa-train-v1.0.json",
             dict_path="data/coqa-interro-train.json",
             train=True
             )
+"""
