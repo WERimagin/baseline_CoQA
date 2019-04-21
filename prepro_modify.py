@@ -166,7 +166,11 @@ def data_process(input_path,dict_path,modify_path,train=False):
     if train:
         with open("data/coqa-train-modify.json","w")as f:
             json.dump(new_data,f,indent=4)
+    else:
+        with open("data/coqa-train-modify.json","w")as f:
+            json.dump(new_data,f,indent=4)
 
+    """
     if not_modify:
         with open("data/coqa-dev-notmodify.json","w")as f:
             json.dump(new_data,f,indent=4)
@@ -177,7 +181,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
         else:
             with open("data/coqa-dev-noninterro.json","w")as f:
                 json.dump(new_data,f,indent=4)
-
+    """
 """
 #疑問詞だけの質問文をそのままデータに（f1で48程度）
 data_process(input_path="data/coqa-dev-v1.0.json",
