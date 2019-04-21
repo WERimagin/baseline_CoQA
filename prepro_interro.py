@@ -146,8 +146,6 @@ def data_process(input_path,out_path):
             span_text=answer_dict["span_text"]
             turn_id=paragraph["questions"][i]["turn_id"]
 
-            question_interro,neg_interro,vb_check=corenlp.forward_verbcheck(question_text)#疑問詞を探してくる
-
             interro,non_interro,vb_check=corenlp.forward_verbcheck(question_text)
             if len(interro)==0:
                 interro=""

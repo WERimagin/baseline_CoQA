@@ -134,6 +134,7 @@ def data_process(input_path,dict_path,train=True):
             if train==False:
                 #解答がないものは元の文を推定できないため除く
                 if d["vb_check"]==False and d["interro"]!="" and span_start>=0:
+                    print(question_text)
                     if question_text[-1]!="?": interro=" ".join([question_text,"?"])
                     else: interro=question_text
                     sentence_text=" ".join([sentence_text,"<SEP>",interro])
@@ -177,6 +178,7 @@ data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             train=False
             )
+
 """
 data_process(input_path="data/coqa-train-v1.0.json",
             dict_path="data/coqa-interro-train.json",
