@@ -134,6 +134,8 @@ def data_process(input_path,dict_path,modify_path,train=False):
 
             if d["vb_check"]==True and d["interro"]!="" and span_start>0:
                 question_dict["interro_question"]=True
+                print(modify_count)
+                print(modify_data[modify_count])
                 question_dict["input_text"]=modify_data[modify_count]
                 modify_count+=1
             else:
