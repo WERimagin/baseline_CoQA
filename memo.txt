@@ -49,6 +49,15 @@ python3 seq2seq/preprocess.py \
  -save_data data/seq2seq-pipeline \
  -lower -dynamic_dict -src_seq_length 10000
 
+ #embedding
+ PYTHONPATH=seq2seq \
+ python seq2seq/tools/embeddings_to_torch.py \
+  -emb_file_enc ~/data/glove.840B.300d.txt \
+  -emb_file_dec ~/data/glove.840B.300d.txt \
+  -dict_file data/seq2seq-pipeline.vocab.pt \
+  -output_file data/seq2seq-pipeline.embed \
+  -enc_dec enc
+
 #embedding
 PYTHONPATH=seq2seq \
 python seq2seq/tools/embeddings_to_torch.py \
@@ -58,14 +67,7 @@ python seq2seq/tools/embeddings_to_torch.py \
  -output_file data/seq2seq-pipeline.embed \
  -enc_dec dec
 
- #embedding
- PYTHONPATH=seq2seq \
- python seq2seq/tools/embeddings_to_torch.py \
-  -emb_file_enc ~/data/glove.840B.300d.txt \
-  -emb_file_dec ~/data/glove.840B.300d.txt \
-  -dict_file data/seq2seq-pipeline.vocab.pt \
-  -output_file data/seq2seq-pipeline.embed \
-  -enc_dec enc
+
 
 training
 
@@ -86,7 +88,7 @@ python seq2seq/train.py \
 -word_vec_size 300 \
 -pre_word_vecs_enc data/seq2seq-pipeline.embed.enc.pt \
 -pre_word_vecs_dec data/seq2seq-pipeline.embed.dec.pt \
--epochs 20 -gpuid 2 -seed 123 -log_file "log_pgnet.txt"
+-epochs 30 -gpuid 2 -seed 123 -log_file "log_pgnet.txt"
 
 trans
 python rc/main.py \

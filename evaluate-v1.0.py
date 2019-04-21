@@ -43,6 +43,7 @@ class CoQAEvaluator():
                 if i + 1 != qid:
                     sys.stderr.write("Turn id should match index {}: {}\n".format(i + 1, qa))
                 """
+                if qa["span_start"]==-1:continue
                 gold_answers = []
                 for j,answers in enumerate(multiple_answers):
                     if j==0:answer=answers[i]
