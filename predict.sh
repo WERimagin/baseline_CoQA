@@ -95,4 +95,4 @@ python scripts/gen_seq2seq_output.py \
 
 python evaluate-v1.0.py \
 --data-file data/coqa-dev-v1.0.json \
---pred-file data/pipeline.prediction_interro_his_0.json
+--pred-file data/pipeline.prediction-normal.json
