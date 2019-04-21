@@ -88,6 +88,9 @@ def data_process(input_path,dict_path,modify_path,train=False):
         for line in f:
             modify_data.append(line.rstrip())
 
+    print(len(modify_data))
+    print(modify_data[0])
+
     contexts=[]
     questions=[]
     answer_starts=[]
