@@ -18,6 +18,9 @@ python translate.py \
 #生成した質問文をcoqa型のデータに直す
 python prepro_modify.py
 
+->coqa-train-modify.json
+  coqa-dev-modify.json
+
 これをDRQA+PGNETの方に渡す
 
 
@@ -33,7 +36,7 @@ python3 scripts/gen_pipeline_data.py \
 
 #testデータのdrqa用の処理
 python3 scripts/gen_pipeline_data.py \
- --data_file data/coqa-dev-interro.json \
+ --data_file data/coqa-dev-modify.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
 
