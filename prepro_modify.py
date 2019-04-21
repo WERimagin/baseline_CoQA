@@ -88,9 +88,6 @@ def data_process(input_path,dict_path,modify_path,train=False):
         for line in f:
             modify_data.append(line.rstrip())
 
-    print(len(modify_data))
-    print(modify_data[0])
-
     contexts=[]
     questions=[]
     answer_starts=[]
@@ -114,8 +111,9 @@ def data_process(input_path,dict_path,modify_path,train=False):
                         "filename":paragraph["filename"],
                         "story":paragraph["story"],
                         "questions":[],
-                        "answers":[],
-                        "additional_answers":paragraph["additional_answers"]}
+                        "answers":[]}
+        if train==False:
+            new_paragraph["additional_answers"]=paragraph["additional_answers"]
 
         for i in range(len(paragraph["questions"])):
             question_dict=paragraph["questions"][i]
@@ -134,8 +132,6 @@ def data_process(input_path,dict_path,modify_path,train=False):
 
             if d["vb_check"]==False and d["interro"]!="" and span_start>0:
                 question_dict["interro_question"]=True
-                print(modify_count)
-                print(modify_data[modify_count])
                 question_dict["input_text"]=modify_data[modify_count]
                 modify_count+=1
             else:
