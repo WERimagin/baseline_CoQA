@@ -77,7 +77,7 @@ def c2wpointer(context_text,context,answer_start,answer_end):#answer_start,end�
             break
     return answer_start_w,answer_end_w
 
-def data_process(input_path,dict_path,modify_path,use_interro,not_modify=False):
+def data_process(input_path,dict_path,modify_path,train=False):
     with open(input_path,"r") as f:
         data=json.load(f)
     with open(dict_path,"r") as f:
@@ -129,6 +129,16 @@ def data_process(input_path,dict_path,modify_path,use_interro,not_modify=False):
             d=corenlp_data[count]
             count+=1
 
+            if d["vb_check"]==True and d["interro"]!="" and span_start>0:
+                question_dict["interro_question"]=True
+                question_dict["input_text"]=modify_data[modify_count]
+                modify_count+=1
+            else:
+                question_dict["interro_question"]=False
+            new_paragraph["questions"].append(question_dict)
+            new_paragraph["answers"].append(answer_dict)
+
+            """
             #解答がないものは元の文を推定できないため除く
             if d["vb_check"]==False and d["interro"]!="" and span_start>=0 and use_interro==True:
                 #sentence_text=answer_find(context_text,span_start,span_end)
@@ -144,8 +154,13 @@ def data_process(input_path,dict_path,modify_path,use_interro,not_modify=False):
             elif use_interro==False:
                 new_paragraph["questions"].append(question_dict)
                 new_paragraph["answers"].append(answer_dict)
+            """
         if len(new_paragraph["questions"])>0:
             new_data["data"].append(new_paragraph)
+
+    if train:
+        with open("data/coqa-train-modify.json","w")as f:
+            json.dump(new_data,f,indent=4)
 
     if not_modify:
         with open("data/coqa-dev-notmodify.json","w")as f:
@@ -158,6 +173,7 @@ def data_process(input_path,dict_path,modify_path,use_interro,not_modify=False):
             with open("data/coqa-dev-noninterro.json","w")as f:
                 json.dump(new_data,f,indent=4)
 
+"""
 #疑問詞だけの質問文をそのままデータに（f1で48程度）
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
@@ -178,4 +194,19 @@ data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
             modify_path="data/coqa-pred-dev-interro.txt",
             use_interro=False
+            )
+"""
+
+#疑問詞だけの質問文を補完したもの
+data_process(input_path="data/coqa-dev-v1.0.json",
+            dict_path="data/coqa-interro-dev.json",
+            modify_path="data/coqa-pred-dev-interro.txt",
+            train=False
+            )
+
+#疑問詞だけの質問文を補完したもの
+data_process(input_path="data/coqa-train-v1.0.json",
+            dict_path="data/coqa-interro-train.json",
+            modify_path="data/coqa-pred-train-interro.txt",
+            train=True
             )

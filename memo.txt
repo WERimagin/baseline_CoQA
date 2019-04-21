@@ -4,13 +4,13 @@ https://github.com/stanfordnlp/coqa-baselines
 python prepro_interro.py
 
 #test:coqaから疑問詞のみの質問文と文や答えのデータを取り出し、seq2seq用に整形する
-#train:特に何もしません。(#coqaから疑問詞のみの質問文を取り除き、coqa型のデータとして再構築する)
+#train:coqaから疑問詞のみの以下略(学習の際に、生成した質問文を混ぜないと精度が落ちるから)
 全てのデータを使って学習。データ数は多い方がいい。
 python prepro_seq2seq.py
 
 #Opennmtの訓練済みのseq2seqで質問文を予測する
 python translate.py \
--src data/coqa-src-dev.txt \
+-src data/coqa-src-train.txt \
 -output coqa-pred-dev-interro.txt \
 -replace_unk -dynamic_dict \
 -model model_data/
