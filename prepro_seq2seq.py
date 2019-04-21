@@ -95,7 +95,9 @@ def data_process(input_path,dict_path,train=True):
     ids=[]
     answer_replace=False
     count=0
+    interro_count=0
     ans_count=[]
+
 
     new_data={"version":"1.0",
                 "data":[]}
@@ -135,6 +137,7 @@ def data_process(input_path,dict_path,train=True):
                 print(json.dumps(d,indent=4))
                 #解答がないものは元の文を推定できないため除く
                 if d["vb_check"]==False and d["interro"]!="" and span_start>=0:
+                    print(len(questions))
                     print("\t\t{}".format(question_text))
                     if question_text[-1]!="?": interro=" ".join([question_text,"?"])
                     else: interro=question_text
