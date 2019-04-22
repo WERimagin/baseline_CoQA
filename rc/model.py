@@ -21,6 +21,7 @@ class Model(object):
     def __init__(self, config, train_set=None):
         # Book-keeping.
         self.config = config
+        self.pretrained_model=config["pretrained_model"]
         if self.config['pretrained']:
             self.init_saved_network(self.config['pretrained'])
         else:
@@ -56,7 +57,8 @@ class Model(object):
                       'dropout_rnn_output', 'variational_dropout', 'word_dropout']
 
         # Load all saved fields.
-        fname = os.path.join(saved_dir, Constants._SAVED_WEIGHTS_FILE)
+        #fname = os.path.join(saved_dir, Constants._SAVED_WEIGHTS_FILE)
+        fname=self.pretraind_model
         print('[ Loading saved model %s ]' % fname)
         saved_params = torch.load(fname, map_location=lambda storage, loc: storage)
         self.word_dict = saved_params['word_dict']

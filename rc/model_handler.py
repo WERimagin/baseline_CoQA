@@ -23,6 +23,7 @@ class ModelHandler(object):
     def __init__(self, config):
         self.logger = ModelLogger(config, dirname=config['dir'], pretrained=config['pretrained'])
         self.dirname = self.logger.dirname
+        #self.dirname=config["pretrained_model"]
         cuda = config['cuda']
         cuda_id = config['cuda_id']
         if not cuda:
@@ -119,8 +120,10 @@ class ModelHandler(object):
                 self._best_epoch = self._epoch
                 self._best_f1 = self._dev_f1.mean()
                 self._best_em = self._dev_em.mean()
+
+                savename="{}_f1_{}_em_{}".format(self.dirname,self._best_f1,self._best_em)
                 if self.config['save_params']:
-                    self.model.save(self.dirname)
+                    self.model.save(savename)
                 self.textlogger.info("!!! Updated: F1: {:0.2f}, EM: {:0.2f}".format(self._best_f1, self._best_em))
 
             self._reset_metrics()

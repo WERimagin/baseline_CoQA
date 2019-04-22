@@ -41,12 +41,13 @@ def get_args():
     parser.add_argument('--testset', type=str, default=None, help='Test set')
     parser.add_argument('--dir', type=str, default=None, help='Set the name of the model directory for this session.')
     parser.add_argument('--pretrained', type=str, default=None, help='Specify pretrained model directory.')
+    parser.add_argument('--pretrained_model', type=str, default=None, help='Specify pretrained model directory.')
 
     parser.add_argument('--random_seed', type=int, default=123, help='Random seed')
     parser.add_argument('--cuda', type=str2bool, default=True, help='Run network on cuda (GPU) or not.')
     parser.add_argument('--cuda_id', type=int, default=-1, help='Specify a CUDA id.')
     parser.add_argument('--debug', type=str2bool, default=False)
-    
+
 
     parser.add_argument('--n_history', type=int, default=0)
     parser.add_argument('--cased', type=str2bool, default=True, help='Cased or uncased version.')
