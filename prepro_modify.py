@@ -113,6 +113,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
                         "questions":[],
                         "answers":[]}
         if train==False:
+            print("p")
             new_paragraph["additional_answers"]=paragraph["additional_answers"]
 
         for i in range(len(paragraph["questions"])):
