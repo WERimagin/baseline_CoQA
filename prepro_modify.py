@@ -113,7 +113,6 @@ def data_process(input_path,dict_path,modify_path,train=False):
                         "questions":[],
                         "answers":[]}
         if train==False:
-            print("p")
             new_paragraph["additional_answers"]=paragraph["additional_answers"]
 
         for i in range(len(paragraph["questions"])):
@@ -161,10 +160,10 @@ def data_process(input_path,dict_path,modify_path,train=False):
             new_data["data"].append(new_paragraph)
 
     if train:
-        with open("data/coqa-test-modify.json","w")as f:
+        with open("data/coqa-train-modify.json","w")as f:
             json.dump(new_data,f,indent=4)
     else:
-        with open("data/coqa-train-modify.json","w")as f:
+        with open("data/coqa-test-modify.json","w")as f:
             json.dump(new_data,f,indent=4)
 
     """
