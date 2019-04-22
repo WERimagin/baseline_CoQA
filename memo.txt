@@ -11,7 +11,7 @@ python prepro_seq2seq.py
 #Opennmtの訓練済みのseq2seqで質問文を予測する
 python translate.py \
 -src data/coqa-src-train.txt \
--output coqa-pred-dev-interro.txt \
+-output pred.txt \
 -replace_unk -dynamic_dict \
 -model model_data/
 
@@ -78,7 +78,7 @@ python rc/main.py \
  --n_history 0 --dir pipeline_models \
  --embed_file ~/data/glove.840B.300d.txt \
  --predict_raw_text n \
- --cuda_id 3
+ --cuda_id 2
 
 #PGNet
 python seq2seq/train.py \
@@ -88,7 +88,7 @@ python seq2seq/train.py \
 -word_vec_size 300 \
 -pre_word_vecs_enc data/seq2seq-pipeline.embed.enc.pt \
 -pre_word_vecs_dec data/seq2seq-pipeline.embed.dec.pt \
--epochs 30 -gpuid 2 -seed 123 -log_file "log_pgnet.txt"
+-epochs 25 -gpuid 1 -seed 123 -log_file "log_pgnet.txt"
 
 trans
 python rc/main.py \

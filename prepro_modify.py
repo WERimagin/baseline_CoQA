@@ -138,7 +138,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
                 question_dict["interro_question"]=True
                 if interro_modify:
                     question_dict["input_text"]=modify_data[modify_count]
-                    modify_count+=1
+                modify_count+=1
             else:
                 question_dict["interro_question"]=False
             new_paragraph["questions"].append(question_dict)
