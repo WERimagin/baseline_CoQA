@@ -101,6 +101,8 @@ def data_process(input_path,dict_path,modify_path,train=False):
     modify_count=0
     interro_count=0
 
+    interro_modify=False
+
     new_data={"version":"1.0",
                 "data":[]}
 
@@ -131,10 +133,12 @@ def data_process(input_path,dict_path,modify_path,train=False):
             d=corenlp_data[count]
             count+=1
 
-            if d["vb_check"]==False and d["interro"]!="" and span_start>=0:
+
+            if d["vb_check"]==False and d["interro"]!="" and span_start!=-1:
                 question_dict["interro_question"]=True
-                question_dict["input_text"]=modify_data[modify_count]
-                modify_count+=1
+                if interro_modify:
+                    question_dict["input_text"]=modify_data[modify_count]
+                    modify_count+=1
             else:
                 question_dict["interro_question"]=False
             new_paragraph["questions"].append(question_dict)
@@ -160,15 +164,23 @@ def data_process(input_path,dict_path,modify_path,train=False):
         if len(new_paragraph["questions"])>0:
             new_data["data"].append(new_paragraph)
 
-    print("modify_count:{}".format(modify_count))
     print("count:{}".format(count))
+    print("modify_count:{}".format(modify_count))
 
-    if train:
-        with open("data/coqa-train-modify.json","w")as f:
-            json.dump(new_data,f,indent=4)
+    if interro_modify:
+        if train:
+            with open("data/coqa-train-modify.json","w")as f:
+                json.dump(new_data,f,indent=4)
+        else:
+            with open("data/coqa-dev-modify.json","w")as f:
+                json.dump(new_data,f,indent=4)
     else:
-        with open("data/coqa-dev-modify.json","w")as f:
-            json.dump(new_data,f,indent=4)
+        if train:
+            with open("data/coqa-train-notmodify.json","w")as f:
+                json.dump(new_data,f,indent=4)
+        else:
+            with open("data/coqa-dev-notmodify.json","w")as f:
+                json.dump(new_data,f,indent=4)
 
     """
     if not_modify:
