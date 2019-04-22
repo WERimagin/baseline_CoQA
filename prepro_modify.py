@@ -158,13 +158,12 @@ def data_process(input_path,dict_path,modify_path,train=False):
             """
         if len(new_paragraph["questions"])>0:
             new_data["data"].append(new_paragraph)
-            print(new_paragraph["additional_answers"])
 
     if train:
         with open("data/coqa-train-modify.json","w")as f:
             json.dump(new_data,f,indent=4)
     else:
-        with open("data/coqa-test-modify.json","w")as f:
+        with open("data/coqa-dev-modify.json","w")as f:
             json.dump(new_data,f,indent=4)
 
     """
