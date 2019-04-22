@@ -99,6 +99,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
 
     count=0
     modify_count=0
+    interro_count=0
 
     new_data={"version":"1.0",
                 "data":[]}
@@ -158,6 +159,9 @@ def data_process(input_path,dict_path,modify_path,train=False):
             """
         if len(new_paragraph["questions"])>0:
             new_data["data"].append(new_paragraph)
+
+    print("modify_count:{}".format(modify_count))
+    print("count:{}".format(count))
 
     if train:
         with open("data/coqa-train-modify.json","w")as f:
