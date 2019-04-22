@@ -135,8 +135,6 @@ class CoQAEvaluator():
         ''' This is the function what you are probably looking for. a_pred is the answer string your model predicted. '''
         key = (story_id, turn_id)
         a_gold_list = self.gold_data[key]
-        print(a_gold_list,a_pred)
-        print(CoQAEvaluator._compute_turn_score(a_gold_list, a_pred))
         return CoQAEvaluator._compute_turn_score(a_gold_list, a_pred)
 
     def get_raw_scores(self, pred_data):
