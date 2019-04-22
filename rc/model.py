@@ -58,7 +58,7 @@ class Model(object):
 
         # Load all saved fields.
         #fname = os.path.join(saved_dir, Constants._SAVED_WEIGHTS_FILE)
-        fname=self.pretraind_model
+        fname=self.pretrained_model
         print('[ Loading saved model %s ]' % fname)
         saved_params = torch.load(fname, map_location=lambda storage, loc: storage)
         self.word_dict = saved_params['word_dict']

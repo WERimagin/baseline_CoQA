@@ -21,13 +21,13 @@ python seq2seq/translate.py \
 -replace_unk -verbose -gpu 3
 
 python scripts/gen_seq2seq_output.py \
---data_file data/coqa-dev-interro.json \
+--data_file data/coqa-dev-modify.json \
 --pred_file pipeline_models/pred.txt \
---output_file pipeline_models/pipeline.prediction-interro.json
+--output_file pipeline_models/pipeline.prediction-modify.json
 
 python evaluate-v1.0.py \
---data-file data/coqa-dev-interro.json \
---pred-file pipeline_models/pipeline.prediction-interro.json
+--data-file data/coqa-dev-modify.json \
+--pred-file pipeline_models/pipeline.prediction-modify.json
 
 
 
