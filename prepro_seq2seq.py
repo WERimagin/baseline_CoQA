@@ -135,7 +135,7 @@ def data_process(input_path,dict_path,train=True):
             #疑問詞のみのもの
 
             #解答がないものは元の文を推定できないため除く
-            if d["vb_check"]==False and d["interro"]!="" and span_start>0:
+            if d["vb_check"]==False and d["interro"]!="" and span_start!=-1:
                 if question_text[-1]!="?":
                     interro=" ".join([question_text,"?"])
                 else:

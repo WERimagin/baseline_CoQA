@@ -131,7 +131,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
             d=corenlp_data[count]
             count+=1
 
-            if d["vb_check"]==False and d["interro"]!="" and span_start>0:
+            if d["vb_check"]==False and d["interro"]!="" and span_start>=0:
                 question_dict["interro_question"]=True
                 question_dict["input_text"]=modify_data[modify_count]
                 modify_count+=1
