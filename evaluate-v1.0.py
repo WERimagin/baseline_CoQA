@@ -136,6 +136,7 @@ class CoQAEvaluator():
         key = (story_id, turn_id)
         a_gold_list = self.gold_data[key]
         print(a_gold_list,a_pred)
+        print(CoQAEvaluator._compute_turn_score(a_gold_list, a_pred))
         return CoQAEvaluator._compute_turn_score(a_gold_list, a_pred)
 
     def get_raw_scores(self, pred_data):
