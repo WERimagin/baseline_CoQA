@@ -38,6 +38,8 @@ class CoQAEvaluator():
             multiple_answers += story['additional_answers'].values()
             for i, qa in enumerate(questions):
                 qid = qa['turn_id']
+
+                #data_typeによって質問文の種類を絞る
                 if OPTS.data_type=="interro":
                     if qa["interro_question"]==False:
                         continue
@@ -133,6 +135,7 @@ class CoQAEvaluator():
         ''' This is the function what you are probably looking for. a_pred is the answer string your model predicted. '''
         key = (story_id, turn_id)
         a_gold_list = self.gold_data[key]
+        print(a_gold_list,a_pred)
         return CoQAEvaluator._compute_turn_score(a_gold_list, a_pred)
 
     def get_raw_scores(self, pred_data):
