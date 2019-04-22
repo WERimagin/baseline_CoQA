@@ -245,7 +245,7 @@ def parse_args():
                         help='Write accuracy metrics to file (default is stdout).')
     parser.add_argument('--verbose', '-v', action='store_true')
     parser.add_argument('--human', dest="human", action='store_true')
-    parser.add_argument('--data_type', type=str, default="all", action='store_true')
+    parser.add_argument('--data_type', type=str, default="all")
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
