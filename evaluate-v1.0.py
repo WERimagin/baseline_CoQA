@@ -38,11 +38,10 @@ class CoQAEvaluator():
             multiple_answers += story['additional_answers'].values()
             for i, qa in enumerate(questions):
                 qid = qa['turn_id']
-                """
-                idのいくつかは除去してるため削除
-                if i + 1 != qid:
-                    sys.stderr.write("Turn id should match index {}: {}\n".format(i + 1, qa))
-                """
+                if OPTS.data_type=="interro":
+                    if qa["interro_question"]==False continue
+                elif OPTS.data_type=="noninterro":
+                    if qa["interro_question"]==True continue
                 #if story["answers"][i]["span_start"]==-1:continue
                 gold_answers = []
                 for j,answers in enumerate(multiple_answers):
@@ -141,7 +140,7 @@ class CoQAEvaluator():
         for story_id, turn_id in self.gold_data:
             key = (story_id, turn_id)
             if key not in pred_data:
-                sys.stderr.write('Missing prediction for {} and turn_id: {}\n'.format(story_id, turn_id))
+                #sys.stderr.write('Missing prediction for {} and turn_id: {}\n'.format(story_id, turn_id))
                 continue
             a_pred = pred_data[key]
             scores = self.compute_turn_score(story_id, turn_id, a_pred)
@@ -244,6 +243,7 @@ def parse_args():
                         help='Write accuracy metrics to file (default is stdout).')
     parser.add_argument('--verbose', '-v', action='store_true')
     parser.add_argument('--human', dest="human", action='store_true')
+    parser.add_argument('--data_type', type=str, default="all", action='store_true')
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
