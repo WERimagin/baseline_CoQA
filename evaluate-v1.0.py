@@ -39,9 +39,11 @@ class CoQAEvaluator():
             for i, qa in enumerate(questions):
                 qid = qa['turn_id']
                 if OPTS.data_type=="interro":
-                    if qa["interro_question"]==False continue
+                    if qa["interro_question"]==False:
+                        continue
                 elif OPTS.data_type=="noninterro":
-                    if qa["interro_question"]==True continue
+                    if qa["interro_question"]==True:
+                        continue
                 #if story["answers"][i]["span_start"]==-1:continue
                 gold_answers = []
                 for j,answers in enumerate(multiple_answers):
