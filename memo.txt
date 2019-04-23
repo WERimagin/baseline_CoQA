@@ -107,7 +107,7 @@ python seq2seq/translate.py \
 -model pipeline_models/seq2seq_copy_acc_84.73_ppl_2.27_e40.pt \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
--replace_unk -verbose -gpu 3
+-replace_unk -verbose -dynamic_dict -gpu 3
 
 
 python scripts/gen_seq2seq_output.py \
@@ -130,3 +130,4 @@ python evaluate-v1.0.py \
 #めも
 DRQAでtestの方がスコアが高いのはadditional answerも評価に用いているから
 Yes/Noはseq2seqの方で出力
+seq2seqのtranslationにdynamicdictが入ってなかったので挿入
