@@ -6,7 +6,7 @@ python3 scripts/gen_pipeline_data.py \
 python rc/main.py \
 --testset data/coqa.dev.pipeline.json \
 --n_history 0 \
---pretrained pipeline_models --pretrained_model pipeline_models/params-interro-modify-0422.saved \
+--pretrained pipeline_models --pretrained_model pipeline_models/params-interro-modify-0423.saved \
 --cuda_id 3
 
 python scripts/gen_pipeline_for_seq2seq.py \
@@ -15,10 +15,10 @@ python scripts/gen_pipeline_for_seq2seq.py \
 --pred_file pipeline_models/predictions.json
 
 python seq2seq/translate.py \
--model pipeline_models/seq2seq_copy_acc_84.62_ppl_2.27_e18.pt \
+-model pipeline_models/seq2seq_copy_acc_85.04_ppl_2.19_e14.pt \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
--replace_unk -verbose -gpu 3
+-replace_unk -gpu 3
 
 python scripts/gen_seq2seq_output.py \
 --data_file data/coqa-dev-modify.json \

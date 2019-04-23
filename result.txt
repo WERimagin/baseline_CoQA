@@ -18,18 +18,42 @@ normal
    -epochs 20 -gpuid 2 -seed 123 -log_file "log_pgnet.txt"
 }
 
-normal
-7983
-"overall": {
-  "em": 52.0,
-  "f1": 61.1,
-  "turns": 7983
+modify{
+  normal
+  7983
+  "overall": {
+    "em": 52.0,
+    "f1": 61.1,
+    "turns": 7983
+  }
+
+  notmodify
+  879
+  "overall": {
+    "em": 35.4,
+    "f1": 46.9,
+    "turns": 879
+  }
 }
 
-notmodify
-879
-"overall": {
-  "em": 35.4,
-  "f1": 46.9,
+modify2
+{
+  trainデータに置いて、疑問詞を補ってから訓練した
+  前のmodifyではスクリプトがバグっててうまく行かなかった
+  これでは上手く行った。疑問詞が補ったものと、補ってないものの精度は同じぐらい
+
+  noninterro
+  "overall": {
+  "em": 53.2,
+  "f1": 62.3,
+  "turns": 7104
+  }
+
+  interro
+  "overall": {
+  "em": 46.1,
+  "f1": 61.0,
   "turns": 879
+  }
+
 }
