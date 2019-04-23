@@ -49,6 +49,7 @@ class CoQAEvaluator():
                 if story["answers"][i]["span_start"]==-1:
                     continue
                 if story["answers"][i]["input_text"]=="yes" or story["answers"][i]["input_text"]=="no":
+                    continue
                 gold_answers = []
                 for j,answers in enumerate(multiple_answers):
                     if j==0:answer=answers[i]
