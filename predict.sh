@@ -18,7 +18,7 @@ python seq2seq/translate.py \
 -model pipeline_models/seq2seq_copy_acc_85.04_ppl_2.19_e14.pt \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
--replace_unk -gpu 3
+-replace_unk -dynamic_dict -gpu 3
 
 python scripts/gen_seq2seq_output.py \
 --data_file data/coqa-dev-modify.json \
