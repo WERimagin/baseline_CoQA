@@ -101,7 +101,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
     modify_count=0
     interro_count=0
 
-    interro_modify=False
+    interro_modify=True
 
     new_data={"version":"1.0",
                 "data":[]}
@@ -151,11 +151,12 @@ def data_process(input_path,dict_path,modify_path,train=False):
     print("modify_count:{}".format(modify_count))
 
     if interro_modify:
+        type="interro-beam2"
         if train:
-            with open("data/coqa-train-modify.json","w")as f:
+            with open("data/coqa-train-{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
         else:
-            with open("data/coqa-dev-modify.json","w")as f:
+            with open("data/coqa-dev-{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
     else:
         if train:
@@ -169,12 +170,12 @@ def data_process(input_path,dict_path,modify_path,train=False):
 
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
-            modify_path="data/coqa-pred-dev-interro.txt",
+            modify_path="data/coqa-pred-dev-interro-beam2.txt",
             train=False
             )
 
 data_process(input_path="data/coqa-train-v1.0.json",
             dict_path="data/coqa-interro-train.json",
-            modify_path="data/coqa-pred-train-interro.txt",
+            modify_path="data/coqa-pred-train-interro-beam2.txt",
             train=True
             )
