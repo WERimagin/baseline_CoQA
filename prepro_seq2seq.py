@@ -97,7 +97,7 @@ def data_process(input_path,dict_path,train=True):
     count=0
     interro_count=0
     ans_count=[]
-    use_interro=True
+    use_interro=False
 
 
     new_data={"version":"1.0",
@@ -166,6 +166,13 @@ def data_process(input_path,dict_path,train=True):
     print("interro sentence:{}".format(len(sentences)))
 
     if use_interro:
+        with open("data/coqa-src-{}.txt".format(type),"w")as f:
+            for line in sentences:
+                f.write(line+"\n")
+        with open("data/coqa-tgt-{}.txt".format(type),"w")as f:
+            for line in questions:
+                f.write(line+"\n")
+    else:
         setting="-sentence"
         with open("data/coqa-src-{}{}.txt".format(type,setting),"w")as f:
             for line in sentences:
@@ -173,13 +180,7 @@ def data_process(input_path,dict_path,train=True):
         with open("data/coqa-tgt-{}{}.txt".format(type,setting),"w")as f:
             for line in questions:
                 f.write(line+"\n")
-    else:
-        with open("data/coqa-src-{}.txt".format(type),"w")as f:
-            for line in sentences:
-                f.write(line+"\n")
-        with open("data/coqa-tgt-{}.txt".format(type),"w")as f:
-            for line in questions:
-                f.write(line+"\n")
+
 
 
 data_process(input_path="data/coqa-dev-v1.0.json",
