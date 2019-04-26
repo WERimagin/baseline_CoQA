@@ -3,6 +3,7 @@ import torch
 import codecs
 import os
 import math
+from tqdm import tqdm
 
 from itertools import count
 
@@ -10,6 +11,7 @@ import onmt.ModelConstructor
 import onmt.translate.Beam
 import onmt.io
 import onmt.opts
+
 
 
 def make_translator(opt, report_score=True, logger=None, out_file=None):
