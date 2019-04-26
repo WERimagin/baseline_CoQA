@@ -54,7 +54,7 @@ modify2
   --testset data/coqa.dev.pipeline.json \
   --n_history 0 \
   --pretrained pipeline_models --pretrained_model pipeline_models/params-interro-modify-0423.saved \
-  --cuda_id 3
+  --cuda_id 2
 
   python scripts/gen_pipeline_for_seq2seq.py \
   --data_file data/coqa.dev.pipeline.json \
@@ -65,7 +65,7 @@ modify2
   -model pipeline_models/seq2seq_copy_acc_85.04_ppl_2.19_e14.pt \
   -src pipeline_models/pipeline-seq2seq-src.txt \
   -output pipeline_models/pred.txt \
-  -replace_unk -gpu 3
+  -replace_unk -gpu 1
 
   python scripts/gen_seq2seq_output.py \
   --data_file data/coqa-dev-modify.json \
@@ -185,6 +185,33 @@ beam_sizeを2にして実験
   python prepro_modify.py
   prepro ...
 
+  python scripts/gen_pipeline_data.py \
+   --data_file data/coqa-dev-interro-beam2.json \
+   --output_file1 data/coqa.dev.pipeline.json \
+   --output_file2 data/seq2seq-dev-pipeline
+
+  python rc/main.py \
+  --testset data/coqa.dev.pipeline.json \
+  --n_history 0 \
+  --pretrained pipeline_models --pretrained_model pipeline_models/params-interro-beam2-0425.saved \
+  --cuda_id $2
+
+  python scripts/gen_pipeline_for_seq2seq.py \
+  --data_file data/coqa.dev.pipeline.json \
+  --output_file pipeline_models/pipeline-seq2seq-src.txt \
+  --pred_file pipeline_models/predictions.json
+
+  python seq2seq/translate.py \
+  -model pipeline_models/seq2seq_copy_acc_84.71_ppl_2.18_e25.pt \
+  -src pipeline_models/pipeline-seq2seq-src.txt \
+  -output pipeline_models/pred.txt \
+  -replace_unk -dynamic_dict -gpu $2
+
+  python scripts/gen_seq2seq_output.py \
+  --data_file data/coqa-dev-interro-beam2.json \
+  --pred_file pipeline_models/pred.txt \
+  --output_file pipeline_models/pipeline.prediction-interro-beam2.json
+
   [2019-04-25 19:23:20,652 INFO] [predict-15] step: [0 / 249] | f1 = 30.90 | em = 21.88
   [2019-04-25 19:23:20,652 INFO] used_time: 0.18s
   [2019-04-25 19:24:02,601 INFO] Validation Epoch 15 -- F1: 47.60, EM: 36.86 --
@@ -197,7 +224,7 @@ beam_sizeを2にして実験
     "f1": 62.0,
     "turns": 7983
   }
-  
+
   restored_interro
   "overall": {
     "em": 46.1,
