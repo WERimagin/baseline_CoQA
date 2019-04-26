@@ -38,6 +38,7 @@ modify{
 
 modify2
 {
+
   trainデータに置いて、疑問詞を補ってから訓練した
   前のmodifyではスクリプトがバグっててうまく行かなかった
   これでは上手く行った。疑問詞が補ったものと、補ってないものの精度は同じぐらい
@@ -74,6 +75,8 @@ modify2
   python evaluate-v1.0.py \
   --data-file data/coqa-dev-modify.json \
   --pred-file pipeline_models/pipeline.prediction-modify.json
+
+  beam_size 5
 
   all
   "overall": {
@@ -179,7 +182,22 @@ beam_sizeを2にして実験
   -output pred.txt \
   -replace_unk -dynamic_dict \
   -model model_data/demo-model_step_28000_ppl_12.0609_acc_56.5888.pt --beamsize 2
+  python prepro_modify.py
+  prepro ...
+
+  [2019-04-25 19:23:20,652 INFO] [predict-15] step: [0 / 249] | f1 = 30.90 | em = 21.88
+  [2019-04-25 19:23:20,652 INFO] used_time: 0.18s
+  [2019-04-25 19:24:02,601 INFO] Validation Epoch 15 -- F1: 47.60, EM: 36.86 --
+  [2019-04-25 19:24:05,148 INFO] !!! Updated: F1: 47.60, EM: 36.86
+  
 }
 
 
+
+
 }
+
+sentenceのみから質問文を生成
+beamsize 2で実験
+  bleuではbeamsize 2の方が精度が高かったが、不自然な文？
+  質疑応答できるかを実験

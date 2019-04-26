@@ -10,7 +10,7 @@ python prepro_seq2seq.py
 
 #Opennmtの訓練済みのseq2seqで質問文を予測する
 python translate.py \
--src data/coqa-src-dev.txt \
+-src data/coqa-src-train.txt \
 -output pred.txt \
 -replace_unk -dynamic_dict \
 -model model_data/
@@ -88,7 +88,7 @@ python seq2seq/train.py \
 -word_vec_size 300 \
 -pre_word_vecs_enc data/seq2seq-pipeline.embed.enc.pt \
 -pre_word_vecs_dec data/seq2seq-pipeline.embed.dec.pt \
--epochs 25 -gpuid 1 -seed 123 -log_file "log_pgnet.txt"
+-epochs 25 -gpuid 1 -seed 123 -log_file log_pgnet.txt
 
 trans
 python rc/main.py \
@@ -131,3 +131,4 @@ python evaluate-v1.0.py \
 DRQAでtestの方がスコアが高いのはadditional answerも評価に用いているから
 Yes/Noはseq2seqの方で出力
 seq2seqのtranslationにdynamicdictが入ってなかったので挿入
+  効果はない。おそらく自動で行われている

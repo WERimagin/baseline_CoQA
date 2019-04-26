@@ -1,5 +1,7 @@
+#!/bin/sh
+
 python scripts/gen_pipeline_data.py \
- --data_file data/coqa-dev-normal.json \
+ --data_file data/coqa-dev-$1.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
 
@@ -21,9 +23,9 @@ python seq2seq/translate.py \
 -replace_unk -dynamic_dict -gpu 3
 
 python scripts/gen_seq2seq_output.py \
---data_file data/coqa-dev-normal.json \
+--data_file data/coqa-dev-$1.json \
 --pred_file pipeline_models/pred.txt \
---output_file pipeline_models/pipeline.prediction-normal.json
+--output_file pipeline_models/pipeline.prediction-$1.json
 
 python evaluate-v1.0.py \
 --data-file data/coqa-dev-normal.json \
@@ -34,14 +36,14 @@ python evaluate-v1.0.py \
 
 
 python3 scripts/gen_pipeline_data.py \
- --data_file data/coqa-dev-modify.json \
+ --data_file data/coqa-dev-interro-beam2.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
 
 python rc/main.py \
 --testset data/coqa.dev.pipeline.json \
 --n_history 0 \
---pretrained pipeline_models --pretrained_model pipeline_models/params-normal-0424.saved \
+--pretrained pipeline_models --pretrained_model pipeline_models/params-interro-beam2.saved \
 --cuda_id 3
 
 python scripts/gen_pipeline_for_seq2seq.py \
@@ -50,15 +52,15 @@ python scripts/gen_pipeline_for_seq2seq.py \
 --pred_file pipeline_models/predictions.json
 
 python seq2seq/translate.py \
--model pipeline_models/seq2seq_copy_acc_84.75_ppl_2.26_e21.pt \
+-model pipeline_models/seq2seq_copy_acc_84.71_ppl_2.18_e25.pt \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
 -replace_unk -dynamic_dict -gpu 3
 
 python scripts/gen_seq2seq_output.py \
---data_file data/coqa-dev-modify.json \
+--data_file data/coqa-dev-interro-beam2.json \
 --pred_file pipeline_models/pred.txt \
---output_file pipeline_models/pipeline.prediction-modify.json
+--output_file pipeline_models/pipeline.prediction-beam2.json
 
 python evaluate-v1.0.py \
 --data-file data/coqa-dev-modify.json \
