@@ -97,7 +97,7 @@ def data_process(input_path,dict_path,train=True):
     count=0
     interro_count=0
     ans_count=[]
-    use_sentence=True
+    use_interro=True
 
 
     new_data={"version":"1.0",
@@ -165,7 +165,7 @@ def data_process(input_path,dict_path,train=True):
     print("data size:{}".format(count))
     print("interro sentence:{}".format(len(sentences)))
 
-    if use_sentence:
+    if use_interro:
         setting="-sentence"
         with open("data/coqa-src-{}{}.txt".format(type,setting),"w")as f:
             for line in sentences:

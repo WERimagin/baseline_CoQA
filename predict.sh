@@ -34,8 +34,3 @@ python evaluate-v1.0.py \
 --pred-file pipeline_models/pipeline.prediction-interro-beam2.json
 
 comment
-
-#!/bin/sh
-
-conda deactivate
-conda activate .conda/envs/$1
