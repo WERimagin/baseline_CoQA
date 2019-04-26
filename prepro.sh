@@ -1,10 +1,10 @@
 python3 scripts/gen_pipeline_data.py \
---data_file data/coqa-train-interro-beam2.json \
+--data_file data/coqa-train-$1.json \
 --output_file1 data/coqa.train.pipeline.json \
 --output_file2 data/seq2seq-train-pipeline
 
 python3 scripts/gen_pipeline_data.py \
- --data_file data/coqa-dev-interro-beam2.json \
+ --data_file data/coqa-dev-$1.json \
  --output_file1 data/coqa.dev.pipeline.json \
  --output_file2 data/seq2seq-dev-pipeline
 

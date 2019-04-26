@@ -119,13 +119,6 @@ python evaluate-v1.0.py \
 --data-file data/coqa-dev-notmodify.json \
 --pred-file pipeline_models/pipeline.prediction-notmodify.json
 
-python evaluate-v1.0.py \
---data-file data/coqa-dev-interro.json \
---pred-file pipeline_models/pipeline.prediction-interro.json
-
-python evaluate-v1.0.py \
---data-file data/coqa-dev-noninterro.json \
---pred-file pipeline_models/pipeline.prediction-noninterro.json
 
 #めも
 DRQAでtestの方がスコアが高いのはadditional answerも評価に用いているから

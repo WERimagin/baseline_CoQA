@@ -189,7 +189,33 @@ beam_sizeを2にして実験
   [2019-04-25 19:23:20,652 INFO] used_time: 0.18s
   [2019-04-25 19:24:02,601 INFO] Validation Epoch 15 -- F1: 47.60, EM: 36.86 --
   [2019-04-25 19:24:05,148 INFO] !!! Updated: F1: 47.60, EM: 36.86
-  
+
+  beam_size 2
+  all
+  "overall": {
+    "em": 52.3,
+    "f1": 62.1,
+    "turns": 7983
+  }
+
+  restored_interro
+  "overall": {
+    "em": 45.5,
+    "f1": 60.5,
+    "turns": 879
+  }
+
+
+  noninterro
+  "overall": {
+    "em": 53.2,
+    "f1": 62.3,
+    "turns": 7104
+  }
+
+  sh predict normal
+  interro(normal)
+
 }
 
 
