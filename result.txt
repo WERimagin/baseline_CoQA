@@ -194,27 +194,33 @@ beam_sizeを2にして実験
   all
   "overall": {
     "em": 52.3,
-    "f1": 62.1,
+    "f1": 62.0,
     "turns": 7983
   }
-
+  
   restored_interro
   "overall": {
-    "em": 45.5,
-    "f1": 60.5,
+    "em": 46.1,
+    "f1": 61.0,
     "turns": 879
   }
 
 
   noninterro
   "overall": {
-    "em": 53.2,
-    "f1": 62.3,
+    "em": 53.1,
+    "f1": 62.1,
     "turns": 7104
   }
 
   sh predict normal
   interro(normal)
+  "overall": {
+    "em": 32.2,
+    "f1": 42.7,
+    "turns": 879
+  }
+
 
 }
 

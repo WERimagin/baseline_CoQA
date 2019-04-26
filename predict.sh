@@ -30,7 +30,7 @@ python scripts/gen_seq2seq_output.py \
 << comment
 
 python evaluate-v1.0.py \
---data-file data/coqa-dev-interro-beam2.json \
---pred-file pipeline_models/pipeline.prediction-interro-beam2.json
+--data-file data/coqa-dev-normal.json \
+--pred-file pipeline_models/pipeline.prediction-normal.json
 
 comment

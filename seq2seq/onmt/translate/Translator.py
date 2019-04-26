@@ -158,7 +158,7 @@ class Translator(object):
         gold_score_total, gold_words_total = 0, 0
 
         all_scores = []
-        for batch in data_iter:
+        for batch in tqdm(data_iter):
             batch_data = self.translate_batch(batch, data)
             translations = builder.from_batch(batch_data)
 
