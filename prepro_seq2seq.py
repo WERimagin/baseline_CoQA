@@ -97,6 +97,7 @@ def data_process(input_path,dict_path,train=True):
     count=0
     interro_count=0
     ans_count=[]
+    use_sentence=True
 
 
     new_data={"version":"1.0",
@@ -140,7 +141,8 @@ def data_process(input_path,dict_path,train=True):
                     interro=" ".join([question_text,"?"])
                 else:
                     interro=question_text
-                sentence_text=" ".join([sentence_text,"<SEP>",interro])
+                if use_interro:
+                    sentence_text=" ".join([sentence_text,"<SEP>",interro])
                 sentences.append(sentence_text)
                 questions.append(question_text)
             new_paragraph["questions"].append(question_dict)
@@ -163,12 +165,21 @@ def data_process(input_path,dict_path,train=True):
     print("data size:{}".format(count))
     print("interro sentence:{}".format(len(sentences)))
 
-    with open("data/coqa-src-{}.txt".format(type),"w")as f:
-        for line in sentences:
-            f.write(line+"\n")
-    with open("data/coqa-tgt-{}.txt".format(type),"w")as f:
-        for line in questions:
-            f.write(line+"\n")
+    if use_sentence:
+        setting="-sentence"
+        with open("data/coqa-src-{}{}.txt".format(type,setting),"w")as f:
+            for line in sentences:
+                f.write(line+"\n")
+        with open("data/coqa-tgt-{}{}.txt".format(type,setting),"w")as f:
+            for line in questions:
+                f.write(line+"\n")
+    else:
+        with open("data/coqa-src-{}.txt".format(type),"w")as f:
+            for line in sentences:
+                f.write(line+"\n")
+        with open("data/coqa-tgt-{}.txt".format(type),"w")as f:
+            for line in questions:
+                f.write(line+"\n")
 
 
 data_process(input_path="data/coqa-dev-v1.0.json",
