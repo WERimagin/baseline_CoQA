@@ -1,0 +1,22 @@
+model,data
+
+
+coqa-train-modify.json
+coqa-dev-modify.json
+params-interro-modify-0423.saved
+seq2seq_copy_acc_85.04_ppl_2.19_e14.pt
+  疑問詞の補完を行って学習
+  beamは5
+
+coqa-train-normal.json
+coqa-dev-normal.json
+params-normal-0424.saved
+seq2seq_copy_acc_84.75_ppl_2.26_e21.pt
+  疑問詞はそのまま（補完を行わない）
+
+coqa-train-interro-beam2.json
+coqa-dev-interro-beam2.json
+params-interro-beam2-0425.saved
+seq2seq_copy_acc_84.71_ppl_2.18_e25.pt
+  疑問詞の補完を行って学習
+  beamは2
