@@ -163,7 +163,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
             new_paragraph["questions"].append(question_dict)
             new_paragraph["answers"].append(answer_dict)
             """
-        new_data.append(new_paragraph)
+        new_data["data"].append(new_paragraph)
 
     print("count:{}".format(count))
     print("modify_count:{}".format(modify_count))
