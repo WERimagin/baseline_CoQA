@@ -91,11 +91,9 @@ def data_process(input_path,dict_path,train=True):
     answers=[]
     sentences=[]
     ids=[]
-    answer_replace=False
+
     count=0
-    interro_count=0
-    ans_count=[]
-    use_interro=False
+    use_interro=True
 
 
     new_data={"version":"1.0",
