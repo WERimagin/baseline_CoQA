@@ -58,6 +58,8 @@ def process(text):
     return output
 """
 
+#corenlpを用いて単語分割していたのをword_tokenizeでの分割に変更
+#高速化するが、精度は知らない
 def process(text):
     output = {'word': [],
               # 'lemma': [],

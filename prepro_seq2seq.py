@@ -78,8 +78,6 @@ def c2wpointer(context_text,context,answer_start,answer_end):#answer_start,end�
     return answer_start_w,answer_end_w
 
 
-
-
 def data_process(input_path,dict_path,train=True):
     with open(input_path,"r") as f:
         data=json.load(f)
@@ -129,9 +127,19 @@ def data_process(input_path,dict_path,train=True):
             sentence_text=" ".join(tokenize(sentence_text))
             question_text=" ".join(tokenize(question_text))
 
-            d=corenlp_data[count]
+            interro=corenlp_data[count]["interro"]
             count+=1
 
+
+            if interro!="" and span_start!=-1:
+                if interro[-1]=="?":
+                    interro=interro[:-2]
+                if use_interro:
+                    sentence_text=" ".join([sentence_text,"<SEP>",interro])
+                sentences.append(sentence_text)
+                questions.append(question_text)
+
+            """
             #完全な文、new_dataにparagraphを入れていく
             #疑問詞のみのもの
 
@@ -147,8 +155,6 @@ def data_process(input_path,dict_path,train=True):
                 questions.append(question_text)
             new_paragraph["questions"].append(question_dict)
             new_paragraph["answers"].append(answer_dict)
-
-            """
             #完全な文、new_dataにparagraphを入れていく
             #question_dictに疑問詞のみの文かどうかのチェックを入れる
             elif train==True:
@@ -158,18 +164,17 @@ def data_process(input_path,dict_path,train=True):
                 new_paragraph["answers"].append(answer_dict)
             """
 
-        if len(new_paragraph["questions"])>0:
-            new_data["data"].append(new_paragraph)
-
-    type="train" if train else "dev"
     print("data size:{}".format(count))
     print("interro sentence:{}".format(len(sentences)))
 
+    type="-train" if train else "-dev"
+
     if use_interro:
-        with open("data/coqa-src-{}.txt".format(type),"w")as f:
+        setting="-interro"
+        with open("data/coqa-src{}{}.txt".format(type,setting),"w")as f:
             for line in sentences:
                 f.write(line+"\n")
-        with open("data/coqa-tgt-{}.txt".format(type),"w")as f:
+        with open("data/coqa-tgt{}{}.txt".format(type,setting),"w")as f:
             for line in questions:
                 f.write(line+"\n")
     else:
