@@ -150,7 +150,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
                 new_answer_dict["turn_id"]=turn_id+len(paragraph["questions"])
 
                 new_paragraph["questions"].append(new_question_dict)
-                new_paragraph["answers"].append(answer_dict)
+                new_paragraph["answers"].append(new_answer_dict)
 
             """
             if d["vb_check"]==False and d["interro"]!="" and span_start!=-1:
