@@ -99,8 +99,6 @@ def data_process(input_path,dict_path,modify_path,train=False):
 
     count=0
     modify_count=0
-    interro_count=0
-
     interro_modify=True
 
     new_data={"version":"1.0",
@@ -128,12 +126,30 @@ def data_process(input_path,dict_path,modify_path,train=False):
             span_start=answer_dict["span_start"]
             span_end=answer_dict["span_end"]
             span_text=answer_dict["span_text"]
-            turn_id=paragraph["questions"][i]["turn_id"]
+            turn_id=question_dict["turn_id"]
 
-            d=corenlp_data[count]
+            interro=corenlp_data[count]["interro"]
+            vb_check=corenlp_data[count]["vb_check"]
             count+=1
 
+            question_dict["modify_question"]=False
+            if vb_check:
+                question_dict["interro_question"]=True
+            else:
+                question_dict["interro_question"]=False
+            new_paragraph["questions"].append(question_dict)
+            new_paragraph["answers"].append(answer_dict)
 
+            if interro_modify and interro!="" and span_start!=-1:
+                new_question_dict=question_dict.copy()
+                new_question_dict["turn_id"]=turn_id+len(paragraph["questions"])
+                new_question_dict["modify_question"]=True
+                new_question_dict["input_text"]=modify_data[modify_count]
+                modify_count+=1
+                new_paragraph["questions"].append(question_dict)
+                new_paragraph["answers"].append(answer_dict)
+
+            """
             if d["vb_check"]==False and d["interro"]!="" and span_start!=-1:
                 question_dict["interro_question"]=True
                 if interro_modify:
@@ -143,20 +159,18 @@ def data_process(input_path,dict_path,modify_path,train=False):
                 question_dict["interro_question"]=False
             new_paragraph["questions"].append(question_dict)
             new_paragraph["answers"].append(answer_dict)
-
-        if len(new_paragraph["questions"])>0:
-            new_data["data"].append(new_paragraph)
+            """
 
     print("count:{}".format(count))
     print("modify_count:{}".format(modify_count))
 
     if interro_modify:
-        type="interro-beam2"
+        type="-modify-interro"
         if train:
-            with open("data/coqa-train-{}.json".format(type),"w")as f:
+            with open("data/coqa-train{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
         else:
-            with open("data/coqa-dev-{}.json".format(type),"w")as f:
+            with open("data/coqa-dev{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
     else:
         if train:
@@ -167,15 +181,14 @@ def data_process(input_path,dict_path,modify_path,train=False):
                 json.dump(new_data,f,indent=4)
 
 
-
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
-            modify_path="data/coqa-pred-dev-interro-beam2.txt",
+            modify_path="data/coqa-pred-dev-interro.txt",
             train=False
             )
 
 data_process(input_path="data/coqa-train-v1.0.json",
             dict_path="data/coqa-interro-train.json",
-            modify_path="data/coqa-pred-train-interro-beam2.txt",
+            modify_path="data/coqa-pred-train-interro.txt",
             train=True
             )

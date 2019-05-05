@@ -10,10 +10,18 @@ python prepro_seq2seq.py
 
 #Opennmtの訓練済みのseq2seqで質問文を予測する
 python translate.py \
--src data/coqa-src-train-sentence.txt \
+-src data/coqa-src-train-interro.txt \
 -output pred.txt \
 -replace_unk -dynamic_dict \
--model model_data/
+-length_penalty avg \
+-model model_data/demo-model_step_33000_ppl_11.9292_acc_56.7303.pt
+
+python translate.py \
+-src data/coqa-src-dev-interro.txt \
+-output pred.txt \
+-replace_unk -dynamic_dict \
+-length_penalty avg \
+-model model_data/demo-model_step_33000_ppl_11.9292_acc_56.7303.pt
 
 #生成した質問文をcoqa型のデータに直す
 python prepro_modify.py
