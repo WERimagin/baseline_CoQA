@@ -85,11 +85,6 @@ class CoQAEvaluator():
         count=0
         for pred in preds:
             pred_dict[(pred['id'], pred['turn_id'])] = pred['answer']
-            if count<30:
-                print((pred['id'], pred['turn_id']))
-            count+=1
-
-
 
         return pred_dict
 
@@ -167,9 +162,6 @@ class CoQAEvaluator():
         count=0
         for story_id, turn_id in self.gold_data:
             key = (story_id, turn_id)
-            if count<10:
-                print(key)
-            count+=1
             if key not in pred_data:
                 #sys.stderr.write('Missing prediction for {} and turn_id: {}\n'.format(story_id, turn_id))
                 continue
