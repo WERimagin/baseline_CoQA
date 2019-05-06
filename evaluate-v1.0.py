@@ -73,7 +73,6 @@ class CoQAEvaluator():
                 key = (story_id, qid)
                 if key in gold_dict:
                     sys.stderr.write("Gold file has duplicate stories: {}".format(source))
-                print(key)
                 gold_dict[key] = gold_answers
         return gold_dict, id_to_source
 
