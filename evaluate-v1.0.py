@@ -37,6 +37,8 @@ class CoQAEvaluator():
     #story_idとidを鍵にしてデータを構築
     @staticmethod
     def gold_answers_to_dict(gold_file):
+
+        count=0
         dataset = json.load(open(gold_file))
         gold_dict = {}
         id_to_source = {}
@@ -71,6 +73,9 @@ class CoQAEvaluator():
                     """
                     gold_answers.append(answer['input_text'])
                 key = (story_id, qid)
+                if count<10:
+                    print(key)
+                count+=1
                 if key in gold_dict:
                     sys.stderr.write("Gold file has duplicate stories: {}".format(source))
                 gold_dict[key] = gold_answers
@@ -155,8 +160,12 @@ class CoQAEvaluator():
         ''''Returns a dict with score with each turn prediction'''
         exact_scores = {}
         f1_scores = {}
+        count=0
         for story_id, turn_id in self.gold_data:
             key = (story_id, turn_id)
+            if count<10:
+                print(key)
+            count+=1
             if key not in pred_data:
                 #sys.stderr.write('Missing prediction for {} and turn_id: {}\n'.format(story_id, turn_id))
                 continue
