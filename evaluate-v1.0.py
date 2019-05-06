@@ -73,9 +73,6 @@ class CoQAEvaluator():
                     """
                     gold_answers.append(answer['input_text'])
                 key = (story_id, qid)
-                if count<10:
-                    print(key)
-                count+=1
                 if key in gold_dict:
                     sys.stderr.write("Gold file has duplicate stories: {}".format(source))
                 gold_dict[key] = gold_answers
@@ -85,8 +82,15 @@ class CoQAEvaluator():
     def preds_to_dict(pred_file):
         preds = json.load(open(pred_file))
         pred_dict = {}
+        count=0
         for pred in preds:
             pred_dict[(pred['id'], pred['turn_id'])] = pred['answer']
+            if count<10:
+                print((pred['id'], pred['turn_id']))
+            count+=1
+
+
+
         return pred_dict
 
     @staticmethod
