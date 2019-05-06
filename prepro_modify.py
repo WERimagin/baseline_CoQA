@@ -133,7 +133,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
             count+=1
 
             question_dict["modify_question"]=False
-            if vb_check:
+            if interro!="" and vb_check==False:#疑問詞のみの質問文
                 question_dict["interro_question"]=True
             else:
                 question_dict["interro_question"]=False
