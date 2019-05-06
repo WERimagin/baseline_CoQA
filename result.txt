@@ -247,12 +247,31 @@ beam_sizeを2にして実験
     "f1": 42.7,
     "turns": 879
   }
-
-
 }
 
+modify-interro
+{
+  theの連続を消すなどの修正後
+  train:元のデータ、interroから復元した物を追加。もともと完全な文なども使用
+  データ量は大体前の2倍
+  sh prepro.sh modify-interro
 
+  params-modify-interro-0506.saved
+  seq2seq_copy_acc_84.90_ppl_2.40_e24.pt
 
+  normal
+  "overall": {
+    "em": 52.1,
+    "f1": 61.9,
+    "turns": 7099
+  }
+
+  interro
+  "overall": {
+    "em": 31.4,
+    "f1": 42.9,
+    "turns": 884
+  }
 
 }
 

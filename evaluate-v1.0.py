@@ -5,9 +5,11 @@ The code is based partially on SQuAD 2.0 evaluation script.
 
 """
 main
+    gold_answers_to_dict:gold_answer辞書の作成
+    preds_to_dict:predファイルの読み込み
     model_performance
-        get_raw_scores
-            compute_turn_score
+        get_raw_scores:
+            compute_turn_score:predとanswerの比較
         get_domain_scores
 """
 
@@ -49,14 +51,15 @@ class CoQAEvaluator():
                 if not (qa["modify_question"]==OPTS.modify and qa["interro_question"]==OPTS.interro):
                     continue
                 qid = qa['turn_id']
-
                 gold_answers = []
                 for j,answers in enumerate(multiple_answers):
-                    if qa["modify_question"]:
-                        answer=answers[qid-len(answers)-1]
+                    if j==0:
+                        answer=answers[i]
                     else:
-                        answer=answers[qid-1]
-
+                        if qa["modify_question"]:
+                            answer=answers[qid-len(answers)-1]
+                        else:
+                            answer=answers[qid-1]
                     """
                     if j==0:
                         answer=answers[i]
@@ -155,6 +158,7 @@ class CoQAEvaluator():
         f1_scores = {}
         for story_id, turn_id in self.gold_data:
             key = (story_id, turn_id)
+            print(key)
             if key not in pred_data:
                 #sys.stderr.write('Missing prediction for {} and turn_id: {}\n'.format(story_id, turn_id))
                 continue
