@@ -7,6 +7,7 @@ The code is based partially on SQuAD 2.0 evaluation script.
 main
     model_performance
         get_raw_scores
+            compute_turn_score
         get_domain_scores
 """
 
@@ -67,7 +68,6 @@ class CoQAEvaluator():
                     """
                     gold_answers.append(answer['input_text'])
                 key = (story_id, qid)
-                print(gold_answers)
                 if key in gold_dict:
                     sys.stderr.write("Gold file has duplicate stories: {}".format(source))
                 gold_dict[key] = gold_answers
@@ -146,6 +146,7 @@ class CoQAEvaluator():
         ''' This is the function what you are probably looking for. a_pred is the answer string your model predicted. '''
         key = (story_id, turn_id)
         a_gold_list = self.gold_data[key]
+        print(a_gold_list,a_pred)
         return CoQAEvaluator._compute_turn_score(a_gold_list, a_pred)
 
     def get_raw_scores(self, pred_data):
