@@ -70,6 +70,7 @@ class CoQAEvaluator():
                 key = (story_id, qid)
                 if key in gold_dict:
                     sys.stderr.write("Gold file has duplicate stories: {}".format(source))
+                print(key)
                 gold_dict[key] = gold_answers
         return gold_dict, id_to_source
 
@@ -154,12 +155,10 @@ class CoQAEvaluator():
         f1_scores = {}
         for story_id, turn_id in self.gold_data:
             key = (story_id, turn_id)
-            print(key)
             if key not in pred_data:
                 #sys.stderr.write('Missing prediction for {} and turn_id: {}\n'.format(story_id, turn_id))
                 continue
             a_pred = pred_data[key]
-            print(a_pred)
             scores = self.compute_turn_score(story_id, turn_id, a_pred)
             # Take max over all gold answers
             exact_scores[key] = scores['em']
