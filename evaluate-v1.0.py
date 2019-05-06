@@ -2,6 +2,14 @@
 
 The code is based partially on SQuAD 2.0 evaluation script.
 """
+
+"""
+main
+    model_performance
+        get_raw_scores
+        get_domain_scores
+"""
+
 import argparse
 import json
 import re
@@ -37,15 +45,10 @@ class CoQAEvaluator():
             multiple_answers = [story['answers']]
             multiple_answers += story['additional_answers'].values()
             for i, qa in enumerate(questions):
+                if !(qa["modify_question"]==OPTS.modify and qa["interro_question"]==OPTS.interro):
+                    continue
                 qid = qa['turn_id']
 
-                #data_typeによって質問文の種類を絞る
-                if OPTS.data_type=="interro":
-                    if qa["interro_question"]==False:
-                        continue
-                elif OPTS.data_type=="noninterro":
-                    if qa["interro_question"]==True:
-                        continue
                 gold_answers = []
                 for j,answers in enumerate(multiple_answers):
                     if qid<len(answers):
@@ -255,7 +258,8 @@ def parse_args():
                         help='Write accuracy metrics to file (default is stdout).')
     parser.add_argument('--verbose', '-v', action='store_true')
     parser.add_argument('--human', dest="human", action='store_true')
-    parser.add_argument('--data_type', type=str, default="all")
+    parser.add_argument('--modify', action="store_true")
+    parser.add_argument('--interro', action="store_true")
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
