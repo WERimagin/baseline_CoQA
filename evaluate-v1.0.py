@@ -48,9 +48,18 @@ class CoQAEvaluator():
                         continue
                 gold_answers = []
                 for j,answers in enumerate(multiple_answers):
-                    if j==0:answer=answers[i]
-                    else: answer = answers[qid-1]
+                    if qid<len(answers):
+                        answer=answers[qid]
+                    #modify_question
+                    else:
+                        answer=answers[qid-len(answers)]
+
                     """
+                    if j==0:
+                        answer=answers[i]
+                    else:
+                        answer = answers[qid-1]
+
                     if qid != answer['turn_id']:
                         sys.stderr.write("Question turn id does match answer: {} {}\n".format(qa, answer))
                     """
