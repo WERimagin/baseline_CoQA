@@ -132,15 +132,19 @@ def data_process(input_path,dict_path,modify_path,train=False):
             vb_check=corenlp_data[count]["vb_check"]
             count+=1
 
-            question_dict["modify_question"]=False
-            if interro!="" and vb_check==False:#疑問詞のみの質問文
-                question_dict["interro_question"]=True
-            else:
-                question_dict["interro_question"]=False
-            new_paragraph["questions"].append(question_dict)
-            new_paragraph["answers"].append(answer_dict)
+
 
             if interro_modify and interro!="" and span_start!=-1:
+                #元のままの質問文
+                question_dict["modify_question"]=False
+                if interro!="" and vb_check==False:
+                    question_dict["interro_question"]=True
+                else:
+                    question_dict["interro_question"]=False
+                new_paragraph["questions"].append(question_dict)
+                new_paragraph["answers"].append(answer_dict)
+
+                #修正した質問文
                 new_question_dict=question_dict.copy()
                 new_question_dict["turn_id"]=turn_id+len(paragraph["questions"])
                 new_question_dict["modify_question"]=True
@@ -148,7 +152,6 @@ def data_process(input_path,dict_path,modify_path,train=False):
                 modify_count+=1
                 new_answer_dict=answer_dict.copy()
                 new_answer_dict["turn_id"]=turn_id+len(paragraph["questions"])
-
                 new_paragraph["questions"].append(new_question_dict)
                 new_paragraph["answers"].append(new_answer_dict)
 
