@@ -51,12 +51,12 @@ class CoQAEvaluator():
 
                 gold_answers = []
                 for j,answers in enumerate(multiple_answers):
-                    print(qid,len(answers))
+                    #print(qid,len(answers))
                     if qid<len(answers):
-                        answer=answers[qid]
+                        answer=answers[qid-1]
                     #modify_question
                     else:
-                        answer=answers[qid-len(answers)]
+                        answer=answers[qid-1-len(answers)]
 
                     """
                     if j==0:
