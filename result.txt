@@ -273,6 +273,32 @@ modify-interro
     "turns": 884
   }
 
+  modifyとnotを比較できるようにデータを修正
+  span=-1のもの、疑問詞がないものはデータから除外（trainも）
+    "overall": {
+    "em": 47.8,
+    "f1": 59.5,
+    "turns": 5146
+  }
+  interro
+    "overall": {
+    "em": 35.4,
+    "f1": 45.8,
+    "turns": 879
+  }
+  modify
+  "overall": {
+    "em": 40.1,
+    "f1": 53.7,
+    "turns": 5146
+  }
+  modify-interro
+  "overall": {
+    "em": 44.2,
+    "f1": 58.7,
+    "turns": 879
+  }
+  
 }
 
 sentenceのみから質問文を生成

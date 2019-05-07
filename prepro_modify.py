@@ -99,7 +99,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
 
     count=0
     modify_count=0
-    interro_modify=True
+    interro_modify=False
 
     new_data={"version":"1.0",
                 "data":[]}
@@ -134,7 +134,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
 
 
 
-            if interro_modify and interro!="" and span_start!=-1:
+            if interro!="" and span_start!=-1:
                 #元のままの質問文
                 question_dict["modify_question"]=False
                 if interro!="" and vb_check==False:
@@ -144,16 +144,17 @@ def data_process(input_path,dict_path,modify_path,train=False):
                 new_paragraph["questions"].append(question_dict)
                 new_paragraph["answers"].append(answer_dict)
 
-                #修正した質問文
-                new_question_dict=question_dict.copy()
-                new_question_dict["turn_id"]=turn_id+len(paragraph["questions"])
-                new_question_dict["modify_question"]=True
-                new_question_dict["input_text"]=modify_data[modify_count]
-                modify_count+=1
-                new_answer_dict=answer_dict.copy()
-                new_answer_dict["turn_id"]=turn_id+len(paragraph["questions"])
-                new_paragraph["questions"].append(new_question_dict)
-                new_paragraph["answers"].append(new_answer_dict)
+                if interro_modify or train==False:
+                    #修正した質問文
+                    new_question_dict=question_dict.copy()
+                    new_question_dict["turn_id"]=turn_id+len(paragraph["questions"])
+                    new_question_dict["modify_question"]=True
+                    new_question_dict["input_text"]=modify_data[modify_count]
+                    modify_count+=1
+                    new_answer_dict=answer_dict.copy()
+                    new_answer_dict["turn_id"]=turn_id+len(paragraph["questions"])
+                    new_paragraph["questions"].append(new_question_dict)
+                    new_paragraph["answers"].append(new_answer_dict)
 
             """
             if d["vb_check"]==False and d["interro"]!="" and span_start!=-1:
@@ -172,19 +173,20 @@ def data_process(input_path,dict_path,modify_path,train=False):
     print("modify_count:{}".format(modify_count))
 
     if interro_modify:
-        type="-modify-interro"
+        type="modify-interro"
         if train:
-            with open("data/coqa-train{}.json".format(type),"w")as f:
+            with open("data/coqa-train-{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
         else:
-            with open("data/coqa-dev{}.json".format(type),"w")as f:
+            with open("data/coqa-dev-{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
     else:
+        type="normal"
         if train:
-            with open("data/coqa-train-normal.json","w")as f:
+            with open("data/coqa-train-{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
         else:
-            with open("data/coqa-dev-normal.json","w")as f:
+            with open("data/coqa-dev-{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
 
 

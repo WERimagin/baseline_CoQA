@@ -50,7 +50,7 @@ class CoQAEvaluator():
             multiple_answers = [story['answers']]
             multiple_answers += story['additional_answers'].values()
             for i, qa in enumerate(questions):
-                if not (qa["modify_question"]==OPTS.modify and qa["interro_question"]==OPTS.interro):
+                if qa["modify_question"]!=OPTS.modify or qa["interro_question"]!=OPTS.interro:
                     continue
                 qid = qa['turn_id']
                 gold_answers = []

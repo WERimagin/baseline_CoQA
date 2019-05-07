@@ -17,7 +17,7 @@ python scripts/gen_pipeline_for_seq2seq.py \
 --pred_file pipeline_models/predictions.json
 
 python seq2seq/translate.py \
--model pipeline_models/seq2seq_copy_acc_84.90_ppl_2.40_e24.pt \
+-model pipeline_models/seq2seq_copy_acc_85.27_ppl_2.54_e25.pt \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
 -replace_unk -dynamic_dict -gpu $2
@@ -31,6 +31,6 @@ python scripts/gen_seq2seq_output.py \
 
 python evaluate-v1.0.py \
 --data-file data/coqa-dev-modify-interro.json \
---pred-file pipeline_models/pipeline.prediction-normal.json
+--pred-file pipeline_models/pipeline.prediction-modify-interro.json
 
 comment
