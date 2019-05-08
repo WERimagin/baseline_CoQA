@@ -132,6 +132,8 @@ def data_process(input_path,dict_path,modify_path,train=False):
             vb_check=corenlp_data[count]["vb_check"]
             count+=1
 
+            question_text=" ".join(tokenize(question_text))
+
             if interro!="" and span_start!=-1:
                 #元のままの質問文
                 question_dict["modify_question"]=False
@@ -139,6 +141,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
                     question_dict["interro_question"]=True
                 else:
                     question_dict["interro_question"]=False
+                question_dict["input_text"]=question_text
                 new_paragraph["questions"].append(question_dict)
                 new_paragraph["answers"].append(answer_dict)
 
