@@ -17,11 +17,11 @@ python translate.py \
 -model model_data/demo-model_step_33000_ppl_11.9292_acc_56.7303.pt
 
 python translate.py \
--src data/coqa-src-dev-interro.txt \
+-src data/coqa-src-train-sentence.txt \
 -output pred.txt \
 -replace_unk -dynamic_dict \
 -length_penalty avg \
--model model_data/demo-model_step_33000_ppl_11.9292_acc_56.7303.pt
+-model model_data/demo-model_step_36000_ppl_17.4393_acc_48.5345.pt
 
 #生成した質問文をcoqa型のデータに直す
 python prepro_modify.py

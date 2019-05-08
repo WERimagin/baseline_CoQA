@@ -132,7 +132,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
             vb_check=corenlp_data[count]["vb_check"]
             count+=1
 
-            question_text=" ".join(tokenize(question_text))
+            question_text=" ".join(tokenize(question_text.lower()))
 
             if interro!="" and span_start!=-1:
                 #元のままの質問文
@@ -182,7 +182,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
             with open("data/coqa-dev-{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
     else:
-        type="normal"
+        type="sentence"
         if train:
             with open("data/coqa-train-{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
