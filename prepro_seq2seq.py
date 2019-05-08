@@ -93,7 +93,7 @@ def data_process(input_path,dict_path,train=True):
     ids=[]
 
     count=0
-    use_interro=True
+    use_interro=False
 
 
     new_data={"version":"1.0",
