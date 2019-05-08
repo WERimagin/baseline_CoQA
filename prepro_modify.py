@@ -99,7 +99,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
 
     count=0
     modify_count=0
-    interro_modify=False
+    modify=True
 
     new_data={"version":"1.0",
                 "data":[]}
@@ -132,8 +132,6 @@ def data_process(input_path,dict_path,modify_path,train=False):
             vb_check=corenlp_data[count]["vb_check"]
             count+=1
 
-
-
             if interro!="" and span_start!=-1:
                 #元のままの質問文
                 question_dict["modify_question"]=False
@@ -144,7 +142,7 @@ def data_process(input_path,dict_path,modify_path,train=False):
                 new_paragraph["questions"].append(question_dict)
                 new_paragraph["answers"].append(answer_dict)
 
-                if interro_modify or train==False:
+                if modify or train==False:
                     #修正した質問文
                     new_question_dict=question_dict.copy()
                     new_question_dict["turn_id"]=turn_id+len(paragraph["questions"])
@@ -172,8 +170,8 @@ def data_process(input_path,dict_path,modify_path,train=False):
     print("count:{}".format(count))
     print("modify_count:{}".format(modify_count))
 
-    if interro_modify:
-        type="modify-interro"
+    if modify:
+        type="modify-sentence"
         if train:
             with open("data/coqa-train-{}.json".format(type),"w")as f:
                 json.dump(new_data,f,indent=4)
@@ -192,12 +190,12 @@ def data_process(input_path,dict_path,modify_path,train=False):
 
 data_process(input_path="data/coqa-dev-v1.0.json",
             dict_path="data/coqa-interro-dev.json",
-            modify_path="data/coqa-pred-dev-interro.txt",
+            modify_path="data/coqa-pred-dev-sentence.txt",
             train=False
             )
 
 data_process(input_path="data/coqa-train-v1.0.json",
             dict_path="data/coqa-interro-train.json",
-            modify_path="data/coqa-pred-train-interro.txt",
+            modify_path="data/coqa-pred-train-sentence.txt",
             train=True
             )

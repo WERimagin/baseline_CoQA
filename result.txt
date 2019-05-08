@@ -310,7 +310,34 @@ normal
   modifyを混ぜずに訓練
   sh prepro.sh normal
 
+  normal
+  "overall": {
+    "em": 49.5,
+    "f1": 61.4,
+    "turns": 5146
+  }
 
+  interro
+  "overall": {
+    "em": 33.2,
+    "f1": 44.7,
+    "turns": 879
+  }
+
+
+  modify
+  "overall": {
+    "em": 30.9,
+    "f1": 42.2,
+    "turns": 5146
+  }
+
+  modify-interro
+  "overall": {
+    "em": 35.4,
+    "f1": 48.0,
+    "turns": 879
+  }
 }
 sentenceのみから質問文を生成
 beamsize 2で実験
