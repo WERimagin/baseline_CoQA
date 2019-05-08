@@ -177,10 +177,10 @@ def data_process(input_path,dict_path,train=True):
                 f.write(line+"\n")
     else:
         setting="-sentence"
-        with open("data/coqa-src-{}{}.txt".format(type,setting),"w")as f:
+        with open("data/coqa-src{}{}.txt".format(type,setting),"w")as f:
             for line in sentences:
                 f.write(line+"\n")
-        with open("data/coqa-tgt-{}{}.txt".format(type,setting),"w")as f:
+        with open("data/coqa-tgt{}{}.txt".format(type,setting),"w")as f:
             for line in questions:
                 f.write(line+"\n")
 
