@@ -8,7 +8,7 @@ python scripts/gen_pipeline_data.py \
 python rc/main.py \
 --testset data/coqa.dev.pipeline.json \
 --n_history 0 \
---pretrained pipeline_models --pretrained_model pipeline_models/params-modify-interro-0506.saved \
+--pretrained pipeline_models --pretrained_model pipeline_models/params-normal-0507.saved \
 --cuda_id $2
 
 python scripts/gen_pipeline_for_seq2seq.py \
@@ -17,7 +17,7 @@ python scripts/gen_pipeline_for_seq2seq.py \
 --pred_file pipeline_models/predictions.json
 
 python seq2seq/translate.py \
--model pipeline_models/seq2seq_copy_acc_85.27_ppl_2.54_e25.pt \
+-model pipeline_models/seq2seq_copy_acc_85.27_ppl_2.28_e25.pt \
 -src pipeline_models/pipeline-seq2seq-src.txt \
 -output pipeline_models/pred.txt \
 -replace_unk -dynamic_dict -gpu $2

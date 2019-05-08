@@ -275,6 +275,10 @@ modify-interro
 
   modifyとnotを比較できるようにデータを修正
   span=-1のもの、疑問詞がないものはデータから除外（trainも）
+
+  pipeline_models/params-modify-interro-0506.saved
+  seq2seq_copy_acc_85.27_ppl_2.54_e25.pt
+
     "overall": {
     "em": 47.8,
     "f1": 59.5,
@@ -298,9 +302,16 @@ modify-interro
     "f1": 58.7,
     "turns": 879
   }
-  
+
 }
 
+normal
+{
+  modifyを混ぜずに訓練
+  sh prepro.sh normal
+
+
+}
 sentenceのみから質問文を生成
 beamsize 2で実験
   bleuではbeamsize 2の方が精度が高かったが、不自然な文？
