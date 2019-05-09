@@ -96,7 +96,7 @@ python seq2seq/train.py \
 -word_vec_size 300 \
 -pre_word_vecs_enc data/seq2seq-pipeline.embed.enc.pt \
 -pre_word_vecs_dec data/seq2seq-pipeline.embed.dec.pt \
--epochs 25 -gpuid 2 -seed 123 -log_file log_pgnet.txt
+-epochs 25 -gpuid 0 -seed 123 -log_file log_pgnet.txt
 
 #trans
 python rc/main.py \
