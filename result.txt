@@ -339,7 +339,37 @@ normal
     "turns": 879
   }
 }
-sentenceのみから質問文を生成
-beamsize 2で実験
-  bleuではbeamsize 2の方が精度が高かったが、不自然な文？
-  質疑応答できるかを実験
+
+modify-sentence
+{
+  疑問詞を使わず、文だけから質問文を生成したものを混ぜて訓練
+
+  normal
+  "overall": {
+    "em": 46.3,
+    "f1": 58.2,
+    "turns": 5146
+  }
+
+  interro
+  "overall": {
+    "em": 32.2,
+    "f1": 43.2,
+    "turns": 879
+  }
+
+  modify
+  "overall": {
+    "em": 19.9,
+    "f1": 32.6,
+    "turns": 5146
+  }
+
+  modify-sentence
+  "overall": {
+    "em": 17.0,
+    "f1": 29.9,
+    "turns": 879
+  }
+
+}
