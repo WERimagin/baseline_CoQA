@@ -8,7 +8,7 @@ python scripts/gen_pipeline_data.py \
 python rc/main.py \
 --testset data/coqa.dev.pipeline.json \
 --n_history 0 \
---pretrained pipeline_models --pretrained_model pipeline_models/params-normal-0507.saved.saved \
+--pretrained pipeline_models --pretrained_model pipeline_models/params-normal-0507.saved \
 --cuda_id $2
 
 python scripts/gen_pipeline_for_seq2seq.py \
